@@ -1,0 +1,23 @@
+---
+description: Always use @ alias instead of relative imports
+alwaysApply: true
+---
+
+# Import Aliasing
+
+Always use the `@` path alias for imports from `src/`. Never use relative paths like `./` or `../`.
+
+## Pattern
+
+| ❌ Avoid | ✅ Use |
+|----------|--------|
+| `import App from './App'` | `import App from '@/App'` |
+| `import { store } from '../store'` | `import { store } from '@/store'` |
+| `import { useAppSelector } from '../../store/hooks'` | `import { useAppSelector } from '@/store/hooks'` |
+| `import './index.css'` | `import '@/index.css'` |
+
+## Rules
+
+- Use `@/` for any import whose target lives under `src/`
+- `@` maps to `src/`, so `@/store` → `src/store`, `@/components/Button` → `src/components/Button`
+- Apply to `.ts`, `.tsx`, `.css`, and other importable files

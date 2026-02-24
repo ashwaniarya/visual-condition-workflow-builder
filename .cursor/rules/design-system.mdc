@@ -1,0 +1,51 @@
+---
+description: Use the project design system (src/ui) for all UI work
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# Design System Usage
+
+All UI work MUST use the design system at `@/ui`. Never use raw HTML elements or inline styles for things the design system already provides.
+
+## Import
+
+```tsx
+import { Button, TextInput, Typography, DESIGN_SYSTEM_COLORS, DESIGN_SYSTEM_SPACING } from '@/ui'
+```
+
+## Components Available
+
+- **Button** — variants: `primary | secondary | outline | ghost`, sizes: `sm | md | lg`, props: `loading`, `disabled`, `fullWidth`
+- **TextInput** — props: `label`, `error`, `inputSize` (`sm | md | lg`), `disabled`, `fullWidth`
+- **Typography** — variants: `h1 | h2 | h3 | h4 | body | caption | overline`, props: `weight`, `align`, `color`
+
+## Styling Rules
+
+- Use **Tailwind utility classes** for layout, spacing, and responsiveness — never inline `style={{}}` for these
+- Use design tokens from `@/ui/theme.css` via Tailwind classes: `bg-primary-500`, `text-neutral-700`, `p-md`, `rounded-lg`, etc.
+- Responsive breakpoints: mobile-first → `md:` (tablet 768px) → `lg:` (desktop 1024px)
+- Animations: use `framer-motion` (`motion.*` elements) for entrance/interaction — keep them subtle
+
+## Examples
+
+```tsx
+// ❌ BAD — raw elements, inline styles
+<button style={{ padding: '8px 16px', background: 'blue', color: 'white' }}>Save</button>
+<input style={{ border: '1px solid gray' }} />
+<h1 style={{ fontSize: '2rem' }}>Title</h1>
+
+// ✅ GOOD — design system components + Tailwind layout
+<Button variant="primary" size="md">Save</Button>
+<TextInput label="Email" placeholder="you@example.com" fullWidth />
+<Typography variant="h1">Title</Typography>
+```
+
+## Extending the Design System
+
+When a new reusable component is needed:
+1. Create it in `src/ui/components/`
+2. Export it from `src/ui/components/index.ts`
+3. Use design tokens from `theme.css` — do not hardcode colors or spacing
+4. Add framer-motion subtle entrance animation
+5. Support all 3 breakpoints (mobile, tablet, desktop)

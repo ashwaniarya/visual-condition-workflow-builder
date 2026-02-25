@@ -2,6 +2,7 @@ import type { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
 import type { BaseNode } from "@/model/interface";
 import { NODE_TYPE_BACKGROUNDS } from "@/constants/nodeStyles";
+import { Typography } from "@/ui";
 
 type TaskNodeData = { baseNode: BaseNode };
 
@@ -9,21 +10,17 @@ export default function TaskNode({ data }: NodeProps<TaskNodeData>) {
   const baseNode = data.baseNode;
   return (
     <div
-      style={{
-        padding: 12,
-        borderRadius: 6,
-        backgroundColor: NODE_TYPE_BACKGROUNDS.task,
-        minWidth: 80,
-      }}
+      className="min-w-20 rounded-md p-3"
+      style={{ backgroundColor: NODE_TYPE_BACKGROUNDS.task }}
     >
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
-      <div style={{ fontWeight: 600, fontSize: 13 }}>
+      <Typography variant="body" weight="semibold" className="text-[13px]">
         {baseNode.config.name || "<need name>"}
-      </div>
-      <div style={{ fontSize: 11, color: "#666", marginTop: 4 }}>
+      </Typography>
+      <Typography variant="caption" className="mt-1 text-[11px] text-neutral-500">
         {baseNode.config.description || "<need a description>"}
-      </div>
+      </Typography>
     </div>
   );
 }

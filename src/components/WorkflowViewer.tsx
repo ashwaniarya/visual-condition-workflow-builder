@@ -7,19 +7,6 @@ import { WORKFLOW_VIEWER } from '@/constants/layout'
 
 hljs.registerLanguage('json', json)
 
-const containerStyle: React.CSSProperties = {
-  padding: 12,
-  overflow: 'auto',
-  height: '100%',
-  fontSize: 12,
-  fontFamily: 'monospace',
-}
-
-const preStyle: React.CSSProperties = {
-  margin: 0,
-  padding: 0,
-}
-
 export default function WorkflowViewer() {
   const flowNodes = useStore((state) => Array.from(state.nodeInternals.values()))
   const flowEdges = useStore((state) => state.edges)
@@ -39,8 +26,8 @@ export default function WorkflowViewer() {
   }, [nodes, edges])
 
   return (
-    <div style={containerStyle}>
-      <pre style={preStyle}>
+    <div className="h-full overflow-auto p-3 font-mono text-xs">
+      <pre className="m-0 p-0">
         <code
           className="hljs language-json"
           dangerouslySetInnerHTML={{ __html: highlightedHtml }}

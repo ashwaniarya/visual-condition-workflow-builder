@@ -10,38 +10,7 @@ import {
 import type { BaseEdge as BaseEdgeModel } from "@/model/interface";
 import { setSelection } from "@/store/canvasSlice";
 import { EDGE_LABELS } from "@/constants/edgeLabels";
-import { DELETE_BUTTON_SIZE } from "@/constants/deletionConfig";
-
-const labelBaseStyle: React.CSSProperties = {
-  position: "relative",
-  padding: "4px 8px",
-  borderRadius: 4,
-  border: "1px solid #b1b1b7",
-  background: "#fff",
-  fontSize: 12,
-  cursor: "pointer",
-  pointerEvents: "all",
-};
-
-const deleteButtonStyle: React.CSSProperties = {
-  position: "absolute",
-  top: 0,
-  right: 0,
-  width: DELETE_BUTTON_SIZE,
-  height: DELETE_BUTTON_SIZE,
-  minWidth: DELETE_BUTTON_SIZE,
-  borderRadius: 4,
-  border: "1px solid #b1b1b7",
-  background: "#fff",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: 14,
-  color: "#666",
-  lineHeight: 1,
-  padding: 0,
-};
+import { IconButton } from "@/ui";
 
 interface ConditionEdgeData {
   baseEdge: BaseEdgeModel;
@@ -101,7 +70,7 @@ function ConditionEdge({
           <div
             role="button"
             tabIndex={0}
-            style={labelBaseStyle}
+            className="relative cursor-pointer rounded border border-neutral-300 bg-white px-2 py-1 text-xs pointer-events-auto"
             onClick={handleLabelClick}
             onKeyDown={(e) => e.key === "Enter" && handleLabelClick()}
             onMouseEnter={() => setIsLabelHovered(true)}
@@ -110,15 +79,15 @@ function ConditionEdge({
           >
             <span>{displayText}</span>
             {isLabelHovered && (
-              <button
+              <IconButton
                 type="button"
-                className="nodrag nopan"
-                style={deleteButtonStyle}
-                onClick={handleRemoveClick}
+                icon={<span className="text-sm leading-none">×</span>}
+                variant="neutral"
+                iconButtonSize="sm"
                 aria-label="Remove edge"
-              >
-                ×
-              </button>
+                className="nodrag nopan absolute right-0 top-0"
+                onClick={handleRemoveClick}
+              />
             )}
           </div>
         </div>

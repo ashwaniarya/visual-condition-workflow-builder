@@ -11,12 +11,9 @@ import {
   INVALID_BORDER_COLOR,
   NODE_TYPE_BACKGROUNDS,
 } from "@/constants/nodeStyles";
-import {
-  configFormInputStyle,
-  configFormInputErrorStyle,
-  configFormLabelStyle,
-  configFormErrorTextStyle,
-} from "@/constants/formStyles";
+import ConfigurationField from "@/components/nodes/configuration/primitives/ConfigurationField";
+import ConfigurationTextInput from "@/components/nodes/configuration/primitives/ConfigurationTextInput";
+import { Typography } from "@/ui";
 import {
   OUTGOING_EDGE_CONFIGURATION_POLICY,
   OUTGOING_EDGE_CONFIGURATION_TEXT,
@@ -312,69 +309,47 @@ export default function NodeConfiguration({ nodeId }: NodeConfigurationProps) {
 
   if (!selectedNode) {
     return (
-      <div style={{ padding: 16, color: "#666", fontSize: 14 }}>
-        Select a node or edge to configure
+      <div className="p-4">
+        <Typography variant="body" className="text-neutral-500">
+          Select a node or edge to configure
+        </Typography>
       </div>
     );
   }
 
   return (
     <div
-      style={{
-        padding: 16,
-        backgroundColor,
-        border: `2px solid ${borderColor}`,
-        borderRadius: 8,
-      }}
+      className="rounded-lg border-2 p-4"
+      style={{ backgroundColor, borderColor }}
     >
-      <div style={{ margin: "0 0 16px", fontSize: 13, fontWeight: 600 }}>
+      <Typography variant="body" weight="semibold" className="mb-4 text-[13px]">
         {name || "Node Configuration"}
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        <div>
-          <label style={configFormLabelStyle}>Name</label>
-          <input
-            type="text"
-            value={name}
+      </Typography>
+      <div className="flex flex-col gap-3">
+        <ConfigurationField
+          labelText="Name"
+          errorMessage={validation.nameError}
+          errorElementId="name-error"
+        >
+          <ConfigurationTextInput
+            value={name ?? ""}
             onChange={handleNameChange}
-            style={
-              validation.nameError ? configFormInputErrorStyle : configFormInputStyle
-            }
-            aria-invalid={!!validation.nameError}
-            aria-describedby={validation.nameError ? "name-error" : undefined}
+            errorMessage={validation.nameError}
+            errorElementId="name-error"
           />
-          {validation.nameError && (
-            <span id="name-error" role="alert" style={configFormErrorTextStyle}>
-              {validation.nameError}
-            </span>
-          )}
-        </div>
-        <div>
-          <label style={configFormLabelStyle}>Description</label>
-          <input
-            type="text"
-            value={description}
+        </ConfigurationField>
+        <ConfigurationField
+          labelText="Description"
+          errorMessage={validation.descriptionError}
+          errorElementId="description-error"
+        >
+          <ConfigurationTextInput
+            value={description ?? ""}
             onChange={handleDescriptionChange}
-            style={
-              validation.descriptionError
-                ? configFormInputErrorStyle
-                : configFormInputStyle
-            }
-            aria-invalid={!!validation.descriptionError}
-            aria-describedby={
-              validation.descriptionError ? "description-error" : undefined
-            }
+            errorMessage={validation.descriptionError}
+            errorElementId="description-error"
           />
-          {validation.descriptionError && (
-            <span
-              id="description-error"
-              role="alert"
-              style={configFormErrorTextStyle}
-            >
-              {validation.descriptionError}
-            </span>
-          )}
-        </div>
+        </ConfigurationField>
         <OutgoingEdgesConfiguration
           validTargetNodes={validTargetNodes}
           outgoingFlowEdges={outgoingFlowEdges}

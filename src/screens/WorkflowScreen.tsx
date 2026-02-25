@@ -9,43 +9,34 @@ import { LAYOUT, WORKFLOW_VIEWER } from "@/constants/layout";
 export default function WorkflowScreen() {
   return (
     <ReactFlowProvider>
-      <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      <aside
-        style={{
-          width: LAYOUT.nodePaletteWidth,
-          flexShrink: 0,
-          borderRight: "1px solid #e0e0e0",
-          overflowY: "auto",
-        }}
-      >
-        <NodePalette />
-      </aside>
-      <main style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+      <div className="flex h-screen overflow-hidden">
+        <aside
+          className="shrink-0 overflow-y-auto border-r border-neutral-200"
+          style={{ width: LAYOUT.nodePaletteWidth }}
         >
-          <CanvasHeader />
-          <div style={{ flex: 1 }}>
-            <CanvasContainer />
+          <NodePalette />
+        </aside>
+        <main className="min-w-0 flex-1">
+          <div className="flex h-full flex-col">
+            <CanvasHeader />
+            <div className="flex-1">
+              <CanvasContainer />
+            </div>
+            <div
+              className="overflow-hidden"
+              style={{ height: WORKFLOW_VIEWER.height }}
+            >
+              <WorkflowViewer />
+            </div>
           </div>
-          <div style={{ height: WORKFLOW_VIEWER.height }}>
-            <WorkflowViewer />
-          </div>
-        </div>
-      </main>
-      <aside
-        style={{
-          width: LAYOUT.configurationPanelWidth,
-          flexShrink: 0,
-          borderLeft: "1px solid #e0e0e0",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
-        <ConfigurationPanel />
-      </aside>
-    </div>
+        </main>
+        <aside
+          className="flex shrink-0 flex-col overflow-hidden border-l border-neutral-200"
+          style={{ width: LAYOUT.configurationPanelWidth }}
+        >
+          <ConfigurationPanel />
+        </aside>
+      </div>
     </ReactFlowProvider>
   );
 }

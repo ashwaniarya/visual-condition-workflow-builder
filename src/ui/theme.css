@@ -78,9 +78,15 @@
   --font-size-3xl: 1.875rem;
   --font-size-4xl: 2.25rem;
 
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
   --radius-full: 9999px;
+
+  /* Node and edge styling (centralized tokens) */
+  --node-type-background-start: var(--color-success-50);
+  --node-type-background-end: var(--color-success-50);
+  --node-type-background-task: var(--color-primary-50);
+  --workflow-status-dot-empty: var(--color-neutral-400);
+  --workflow-status-dot-valid: var(--color-success-500);
+  --workflow-status-dot-broken: var(--color-warning-500);
+  --default-border-color: var(--color-neutral-200);
+  --invalid-border-color: var(--color-warning-500);
 }

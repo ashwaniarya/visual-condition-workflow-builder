@@ -2,6 +2,7 @@ import type { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
 import type { BaseNode } from "@/model/interface";
 import { NODE_TYPE_BACKGROUNDS } from "@/constants/nodeStyles";
+import { Typography } from "@/ui";
 
 type EndNodeData = { baseNode: BaseNode };
 
@@ -9,18 +10,16 @@ export default function EndNode({ data }: NodeProps<EndNodeData>) {
   const baseNode = data.baseNode;
   return (
     <div
-      style={{
-        padding: 12,
-        borderRadius: 6,
-        backgroundColor: NODE_TYPE_BACKGROUNDS.end,
-        minWidth: 80,
-      }}
+      className="min-w-20 rounded-md p-3"
+      style={{ backgroundColor: NODE_TYPE_BACKGROUNDS.end }}
     >
       <Handle type="target" position={Position.Left} />
-      <div style={{ fontWeight: 600, fontSize: 13 }}>{baseNode.config.name || "End"}</div>
-      <div style={{ fontSize: 11, color: "#666", marginTop: 4 }}>
+      <Typography variant="body" weight="semibold" className="text-[13px]">
+        {baseNode.config.name || "End"}
+      </Typography>
+      <Typography variant="caption" className="mt-1 text-[11px] text-neutral-500">
         {baseNode.config.description}
-      </div>
+      </Typography>
     </div>
   );
 }

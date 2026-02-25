@@ -1,16 +1,11 @@
-import { motion, type HTMLMotionProps } from 'framer-motion'
 import { type ElementType } from 'react'
-
-const TYPOGRAPHY_ANIMATION_CONFIG = {
-  entrance: { initial: { opacity: 0 }, animate: { opacity: 1 } },
-  transition: { duration: 0.25, ease: 'easeOut' },
-} as const
+import { cn } from '@/lib/utils'
 
 type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'caption' | 'overline'
 type TypographyWeight = 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
 type TypographyAlign = 'left' | 'center' | 'right'
 
-interface TypographyProps extends Omit<HTMLMotionProps<'p'>, 'children'> {
+interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   variant?: TypographyVariant
   weight?: TypographyWeight
   align?: TypographyAlign
@@ -48,31 +43,18 @@ export default function Typography({
   align = 'left',
   color,
   children,
-  className = '',
-  ...motionProps
+  className,
+  ...htmlProps
 }: TypographyProps) {
   const config = VARIANT_CONFIG[variant]
-  const MotionTag = motion.create(config.tag)
-
-  const combinedClassName = [
-    config.classes,
-    weight ? WEIGHT_CLASSES[weight] : '',
-    ALIGN_CLASSES[align],
-    color || '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const Tag = config.tag
 
   return (
-    <MotionTag
-      initial={TYPOGRAPHY_ANIMATION_CONFIG.entrance.initial}
-      animate={TYPOGRAPHY_ANIMATION_CONFIG.entrance.animate}
-      transition={TYPOGRAPHY_ANIMATION_CONFIG.transition}
-      className={combinedClassName}
-      {...motionProps}
+    <Tag
+      className={cn(config.classes, weight && WEIGHT_CLASSES[weight], ALIGN_CLASSES[align], color, className)}
+      {...htmlProps}
     >
       {children}
-    </MotionTag>
+    </Tag>
   )
 }

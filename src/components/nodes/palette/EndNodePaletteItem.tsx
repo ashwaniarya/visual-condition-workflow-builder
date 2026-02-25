@@ -1,6 +1,7 @@
 import type { BaseNode } from "@/model/interface";
 import { NODE_TYPE_BACKGROUNDS } from "@/constants/nodeStyles";
 import { paletteNodeMetadata } from "@/constants/paletteMetadata";
+import { Card, Typography } from "@/ui";
 import InfoButton from "./InfoButton";
 
 interface EndNodePaletteItemProps {
@@ -19,29 +20,21 @@ export default function EndNodePaletteItem({
   const metadata = paletteNodeMetadata[nodeType] ?? paletteNodeMetadata.end;
 
   return (
-    <div
-      style={{
-        padding: 12,
-        borderRadius: 8,
-        backgroundColor,
-        border: "1px solid #e0e0e0",
-        display: "flex",
-        alignItems: "flex-start",
-        gap: 8,
-      }}
+    <Card
+      padding="sm"
+      className="flex items-start gap-sm"
+      style={{ backgroundColor }}
     >
       <div
         draggable
         onDragStart={(e) => onDragStart(e, nodeType)}
-        style={{
-          flex: 1,
-          cursor: "grab",
-          minWidth: 0,
-        }}
+        className="flex-1 cursor-grab min-w-0"
       >
-        <div style={{ fontWeight: 600, fontSize: 13 }}>{metadata.displayTitle}</div>
+        <Typography variant="caption" weight="semibold">
+          {metadata.displayTitle}
+        </Typography>
       </div>
       <InfoButton message={metadata.infoMessage} />
-    </div>
+    </Card>
   );
 }

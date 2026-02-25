@@ -10,6 +10,7 @@ import { validateEdgeCondition } from "@/utils/formValidation";
 import ConfigurationField from "@/components/nodes/configuration/primitives/ConfigurationField";
 import ConfigurationTextInput from "@/components/nodes/configuration/primitives/ConfigurationTextInput";
 import ConfigurationSelectInput from "@/components/nodes/configuration/primitives/ConfigurationSelectInput";
+import { Button, Typography } from "@/ui";
 
 interface OutgoingEdgeAddFormErrors {
   conditionError: string | null;
@@ -39,30 +40,6 @@ interface OutgoingEdgesConfigurationProps {
   onDraftTargetChange: (value: string) => void;
 }
 
-const edgeRowStyle: React.CSSProperties = {
-  padding: 8,
-  border: "1px solid #e5e7eb",
-  borderRadius: 6,
-  display: "flex",
-  flexDirection: "column",
-  gap: 8,
-};
-
-const rowActionButtonStyle: React.CSSProperties = {
-  padding: "6px 10px",
-  border: "1px solid #d1d5db",
-  borderRadius: 6,
-  background: "#fff",
-  cursor: "pointer",
-  fontSize: 12,
-  alignSelf: "flex-start",
-};
-
-const addFormActionContainerStyle: React.CSSProperties = {
-  display: "flex",
-  gap: 8,
-};
-
 const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
   validTargetNodes,
   outgoingFlowEdges,
@@ -89,15 +66,15 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <div style={{ marginTop: 4, fontSize: 12, fontWeight: 600 }}>
+    <div className="flex flex-col gap-3">
+      <Typography variant="caption" weight="semibold" className="mt-1">
         {OUTGOING_EDGE_CONFIGURATION_TEXT.title}
-      </div>
+      </Typography>
 
       {outgoingFlowEdges.length === 0 && (
-        <div style={{ fontSize: 12, color: "#6b7280" }}>
+        <Typography variant="caption" className="text-neutral-500">
           {OUTGOING_EDGE_CONFIGURATION_TEXT.emptyState}
-        </div>
+        </Typography>
       )}
 
       {outgoingFlowEdges.map((flowEdge) => {
@@ -107,7 +84,10 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
           baseEdge.condition ?? ""
         );
         return (
-          <div key={flowEdge.id} style={edgeRowStyle}>
+          <div
+            key={flowEdge.id}
+            className="flex flex-col gap-2 rounded-md border border-neutral-200 p-2"
+          >
             <ConfigurationField
               labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.conditionLabel}
               errorMessage={rowConditionValidation.conditionError}
@@ -142,38 +122,42 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
               />
             </ConfigurationField>
 
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={() => onRemoveOutgoingEdge(flowEdge.id)}
-              style={rowActionButtonStyle}
+              className="self-start"
             >
               {OUTGOING_EDGE_CONFIGURATION_TEXT.removeEdgeButton}
-            </button>
+            </Button>
           </div>
         );
       })}
 
       {!isAddEdgeFormVisible && (
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={onOpenAddEdgeForm}
-          style={rowActionButtonStyle}
           disabled={validTargetNodes.length === 0}
           title={
             validTargetNodes.length === 0
               ? OUTGOING_EDGE_CONFIGURATION_TEXT.noValidTargetNodes
               : undefined
           }
+          className="self-start"
         >
           {OUTGOING_EDGE_CONFIGURATION_TEXT.addEdgeButton}
-        </button>
+        </Button>
       )}
 
       {isAddEdgeFormVisible && (
-        <div style={edgeRowStyle}>
-          <div style={{ fontSize: 12, color: "#6b7280" }}>
+        <div className="flex flex-col gap-2 rounded-md border border-neutral-200 p-2">
+          <Typography variant="caption" className="text-neutral-500">
             {OUTGOING_EDGE_CONFIGURATION_TEXT.addFormHint}
-          </div>
+          </Typography>
 
           <ConfigurationField
             labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.conditionLabel}
@@ -210,21 +194,23 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
             />
           </ConfigurationField>
 
-          <div style={addFormActionContainerStyle}>
-            <button
+          <div className="flex gap-2">
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={onCloseAndResetAddEdgeForm}
-              style={rowActionButtonStyle}
             >
               {OUTGOING_EDGE_CONFIGURATION_TEXT.cancelAddButton}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="primary"
+              size="sm"
               onClick={onSubmitAddEdgeForm}
-              style={rowActionButtonStyle}
             >
               {OUTGOING_EDGE_CONFIGURATION_TEXT.confirmAddButton}
-            </button>
+            </Button>
           </div>
         </div>
       )}

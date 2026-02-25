@@ -1,39 +1,32 @@
-import { motion, type HTMLMotionProps } from 'framer-motion'
-
-const BUTTON_ANIMATION_CONFIG = {
-  entrance: { initial: { opacity: 0, scale: 0.95 }, animate: { opacity: 1, scale: 1 } },
-  hover: { scale: 1.03 },
-  tap: { scale: 0.97 },
-  transition: { duration: 0.2, ease: 'easeOut' },
-} as const
+import { type ReactNode } from 'react'
+import {
+  Button as AnimateUIButton,
+  type ButtonProps as AnimateUIButtonProps,
+} from '@/components/animate-ui/components/buttons/button'
+import { cn } from '@/lib/utils'
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
-interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
+interface ButtonProps extends Omit<AnimateUIButtonProps, 'variant' | 'size' | 'asChild'> {
   variant?: ButtonVariant
   size?: ButtonSize
-  disabled?: boolean
   loading?: boolean
   fullWidth?: boolean
-  children: React.ReactNode
+  children: ReactNode
 }
 
-const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary:
-    'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 shadow-sm',
-  secondary:
-    'bg-secondary-600 text-white hover:bg-secondary-700 active:bg-secondary-800 shadow-sm',
-  outline:
-    'border-2 border-primary-500 text-primary-600 hover:bg-primary-50 active:bg-primary-100',
-  ghost:
-    'text-neutral-600 hover:bg-neutral-100 active:bg-neutral-200',
+const VARIANT_MAP: Record<ButtonVariant, AnimateUIButtonProps['variant']> = {
+  primary: 'default',
+  secondary: 'secondary',
+  outline: 'outline',
+  ghost: 'ghost',
 }
 
-const SIZE_CLASSES: Record<ButtonSize, string> = {
-  sm: 'px-sm py-xs text-sm md:px-md md:py-xs',
-  md: 'px-md py-sm text-base md:px-lg md:py-sm',
-  lg: 'px-lg py-md text-lg md:px-xl md:py-md',
+const SIZE_MAP: Record<ButtonSize, AnimateUIButtonProps['size']> = {
+  sm: 'sm',
+  md: 'default',
+  lg: 'lg',
 }
 
 export default function Button({
@@ -43,37 +36,23 @@ export default function Button({
   loading = false,
   fullWidth = false,
   children,
-  className = '',
-  ...motionProps
+  className,
+  ...restProps
 }: ButtonProps) {
   const isDisabled = disabled || loading
 
-  const combinedClassName = [
-    'inline-flex items-center justify-center font-medium rounded-lg transition-colors cursor-pointer',
-    'focus:outline-2 focus:outline-offset-2 focus:outline-primary-500',
-    VARIANT_CLASSES[variant],
-    SIZE_CLASSES[size],
-    fullWidth ? 'w-full' : '',
-    isDisabled ? 'opacity-50 cursor-not-allowed' : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
-    <motion.button
-      initial={BUTTON_ANIMATION_CONFIG.entrance.initial}
-      animate={BUTTON_ANIMATION_CONFIG.entrance.animate}
-      whileHover={isDisabled ? undefined : BUTTON_ANIMATION_CONFIG.hover}
-      whileTap={isDisabled ? undefined : BUTTON_ANIMATION_CONFIG.tap}
-      transition={BUTTON_ANIMATION_CONFIG.transition}
+    <AnimateUIButton
+      asChild={false}
+      variant={VARIANT_MAP[variant]}
+      size={SIZE_MAP[size]}
       disabled={isDisabled}
-      className={combinedClassName}
-      {...motionProps}
+      className={cn(fullWidth && 'w-full', isDisabled && 'cursor-not-allowed', className)}
+      {...restProps}
     >
       {loading && <LoadingSpinner />}
       {children}
-    </motion.button>
+    </AnimateUIButton>
   )
 }
 

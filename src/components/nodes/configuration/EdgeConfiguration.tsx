@@ -8,6 +8,7 @@ import { validateEdgeCondition } from "@/utils/formValidation";
 import ConfigurationField from "@/components/nodes/configuration/primitives/ConfigurationField";
 import ConfigurationTextInput from "@/components/nodes/configuration/primitives/ConfigurationTextInput";
 import NodeSelectionButton from "@/components/nodes/configuration/primitives/NodeSelectionButton";
+import { Typography } from "@/ui";
 
 interface EdgeConfigurationProps {
   selectedEdge: BaseEdge;
@@ -71,11 +72,11 @@ export default function EdgeConfiguration({
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <h3 style={{ margin: "0 0 16px", fontSize: 14, fontWeight: 600 }}>
+    <div className="p-4">
+      <Typography variant="body" weight="semibold" className="mb-4 text-sm">
         {EDGE_CONFIGURATION_TEXT.title}
-      </h3>
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      </Typography>
+      <div className="flex flex-col gap-3">
         <ConfigurationField labelText={EDGE_CONFIGURATION_TEXT.sourceLabel}>
           <NodeSelectionButton
             directionIndicator="left"

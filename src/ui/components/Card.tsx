@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react'
+import { cn } from '@/lib/utils'
 
 const CARD_STYLE_CONFIG = {
   base: 'rounded-xl border border-neutral-200 bg-white shadow-sm',
@@ -19,20 +20,15 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 export default function Card({
   children,
-  className = '',
+  className,
   padding = 'md',
   ...divProps
 }: CardProps) {
-  const cardClassName = [
-    CARD_STYLE_CONFIG.base,
-    CARD_STYLE_CONFIG.padding[padding],
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
-    <div className={cardClassName} {...divProps}>
+    <div
+      className={cn(CARD_STYLE_CONFIG.base, CARD_STYLE_CONFIG.padding[padding], className)}
+      {...divProps}
+    >
       {children}
     </div>
   )

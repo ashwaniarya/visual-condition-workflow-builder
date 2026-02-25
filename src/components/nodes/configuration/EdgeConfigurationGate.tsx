@@ -1,6 +1,7 @@
 import { useStore } from "reactflow";
 import type { BaseEdge } from "@/model/interface";
 import EdgeConfiguration from "@/components/nodes/configuration/EdgeConfiguration";
+import { Typography } from "@/ui";
 
 interface EdgeConfigurationGateProps {
   edgeId: string;
@@ -31,8 +32,10 @@ export default function EdgeConfigurationGate({
 
   if (!selectedEdge) {
     return (
-      <div style={{ padding: 16, color: "#666", fontSize: 14 }}>
-        Select a node or edge to configure
+      <div className="p-4">
+        <Typography variant="body" className="text-neutral-500">
+          Select a node or edge to configure
+        </Typography>
       </div>
     );
   }

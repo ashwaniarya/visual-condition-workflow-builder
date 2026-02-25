@@ -1,28 +1,7 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { WORKFLOW_STATUS_DOT_COLORS } from "@/constants/nodeStyles";
-
-const headerStyle: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 10,
-  padding: "10px 16px",
-  borderBottom: "1px solid #e0e0e0",
-  backgroundColor: "#fafafa",
-  flexShrink: 0,
-};
-
-const dotBaseStyle: React.CSSProperties = {
-  width: 10,
-  height: 10,
-  borderRadius: "50%",
-  flexShrink: 0,
-};
-
-const messageStyle: React.CSSProperties = {
-  fontSize: 13,
-  color: "#374151",
-};
+import { Typography } from "@/ui";
 
 export default function CanvasHeader() {
   const workflowState = useSelector((state: RootState) => state.canvas.workflowState);
@@ -30,17 +9,19 @@ export default function CanvasHeader() {
 
   const dotColor = WORKFLOW_STATUS_DOT_COLORS[workflowState] ?? WORKFLOW_STATUS_DOT_COLORS.EMPTY;
 
-  const dotStyle: React.CSSProperties = {
-    ...dotBaseStyle,
-    backgroundColor: dotColor,
-    boxShadow: `0 0 8px ${dotColor}`,
-    animation: "workflowStatusPulse 2s ease-in-out infinite",
-  };
-
   return (
-    <header style={headerStyle}>
-      <div style={dotStyle} />
-      <span style={messageStyle}>{workflowStateMessage}</span>
+    <header className="flex shrink-0 items-center gap-2.5 border-b border-neutral-200 bg-neutral-50 px-4 py-2.5">
+      <div
+        className="size-2.5 shrink-0 rounded-full"
+        style={{
+          backgroundColor: dotColor,
+          boxShadow: `0 0 8px ${dotColor}`,
+          animation: "workflowStatusPulse 2s ease-in-out infinite",
+        }}
+      />
+      <Typography variant="body" className="text-[13px] text-neutral-700">
+        {workflowStateMessage}
+      </Typography>
     </header>
   );
 }

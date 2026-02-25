@@ -2,12 +2,13 @@ import { useState, useCallback } from "react";
 import { useReactFlow } from "reactflow";
 import type { NodeProps } from "reactflow";
 import type { BaseNode } from "@/model/interface";
-import { DEFAULT_BORDER, INVALID_BORDER } from "@/constants/nodeStyles";
 import {
   PROTECTED_NODE_TYPES,
-  DELETE_BUTTON_SIZE,
   DELETE_BUTTON_OFFSET,
 } from "@/constants/deletionConfig";
+import { IconButton } from "@/ui";
+import { cn } from "@/lib/utils";
+
 import StartNode from "./StartNode";
 import EndNode from "./EndNode";
 import TaskNode from "./TaskNode";
@@ -35,53 +36,31 @@ export default function Node(props: NodeProps<NodeData>) {
     [id, getNode, deleteElements],
   );
 
-  const wrapperStyle: React.CSSProperties = {
-    position: "relative",
-    borderRadius: 8,
-    overflow: "visible",
-    border: isInvalid ? INVALID_BORDER : DEFAULT_BORDER,
-    boxShadow: isInvalid ? "0 0 0 2px rgba(245, 158, 11, 0.2)" : undefined,
-  };
-
-  const deleteButtonStyle: React.CSSProperties = {
-    position: "absolute",
-    top: DELETE_BUTTON_OFFSET,
-    right: DELETE_BUTTON_OFFSET,
-    width: DELETE_BUTTON_SIZE,
-    height: DELETE_BUTTON_SIZE,
-    borderRadius: 4,
-    border: "1px solid #b1b1b7",
-    background: "#fff",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 14,
-    color: "#666",
-    lineHeight: 1,
-  };
-
   const InnerNode = getInnerNode(baseNode._type);
 
   return (
     <div
-      style={wrapperStyle}
+      className={cn(
+        "relative overflow-visible rounded-lg border-2",
+        isInvalid ? "border-warning-500 ring-2 ring-warning-500/20" : "border-neutral-200",
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div style={{ overflow: "hidden", borderRadius: 8 }}>
+      <div className="overflow-hidden rounded-lg">
         <InnerNode {...props} />
       </div>
       {isHovered && isDeletable && (
-        <button
+        <IconButton
           type="button"
-          className="nodrag nopan"
-          style={deleteButtonStyle}
-          onClick={handleDeleteClick}
+          icon={<span className="text-sm leading-none">×</span>}
+          variant="neutral"
+          iconButtonSize="sm"
           aria-label="Delete node"
-        >
-          ×
-        </button>
+          className="nodrag nopan absolute"
+          style={{ top: DELETE_BUTTON_OFFSET, right: DELETE_BUTTON_OFFSET }}
+          onClick={handleDeleteClick}
+        />
       )}
     </div>
   );

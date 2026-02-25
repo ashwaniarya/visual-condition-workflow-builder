@@ -81,7 +81,7 @@ function CanvasInner() {
 
 export default function CanvasContainer() {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div className="h-full w-full">
       <CanvasInner />
     </div>
   );

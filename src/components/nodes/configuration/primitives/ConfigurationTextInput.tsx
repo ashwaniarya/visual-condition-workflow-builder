@@ -1,8 +1,5 @@
 import type { ChangeEventHandler } from "react";
-import {
-  configFormInputErrorStyle,
-  configFormInputStyle,
-} from "@/constants/formStyles";
+import { TextInput } from "@/ui";
 
 interface ConfigurationTextInputProps {
   value: string;
@@ -19,13 +16,17 @@ export default function ConfigurationTextInput({
   errorMessage,
   errorElementId,
 }: ConfigurationTextInputProps) {
+  const errorStateClassName = errorMessage
+    ? "border-error-500 focus:ring-error-500 focus:border-error-500"
+    : "";
+
   return (
-    <input
-      type="text"
+    <TextInput
       value={value}
       onChange={onChange}
       placeholder={placeholderText}
-      style={errorMessage ? configFormInputErrorStyle : configFormInputStyle}
+      className={errorStateClassName}
+      fullWidth
       aria-invalid={!!errorMessage}
       aria-describedby={errorMessage ? errorElementId : undefined}
     />

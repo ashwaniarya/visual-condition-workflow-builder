@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
-import {
-  configFormErrorTextStyle,
-  configFormLabelStyle,
-} from "@/constants/formStyles";
+import { Typography } from "@/ui";
+
+const CONFIGURATION_FIELD_LAYOUT_CLASS = {
+  wrapper: "flex flex-col gap-xs",
+  label: "text-neutral-700",
+  errorText: "text-error-600",
+} as const;
 
 interface ConfigurationFieldProps {
   labelText: string;
@@ -18,17 +21,20 @@ export default function ConfigurationField({
   errorElementId,
 }: ConfigurationFieldProps) {
   return (
-    <div>
-      <label style={configFormLabelStyle}>{labelText}</label>
+    <div className={CONFIGURATION_FIELD_LAYOUT_CLASS.wrapper}>
+      <Typography variant="caption" className={CONFIGURATION_FIELD_LAYOUT_CLASS.label}>
+        {labelText}
+      </Typography>
       {children}
       {errorMessage && (
-        <span
+        <Typography
+          variant="caption"
           id={errorElementId}
           role="alert"
-          style={configFormErrorTextStyle}
+          className={CONFIGURATION_FIELD_LAYOUT_CLASS.errorText}
         >
           {errorMessage}
-        </span>
+        </Typography>
       )}
     </div>
   );

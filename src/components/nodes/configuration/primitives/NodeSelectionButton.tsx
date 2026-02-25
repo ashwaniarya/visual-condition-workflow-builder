@@ -1,4 +1,9 @@
-import { configFormNodeButtonStyle } from "@/constants/formStyles";
+import { Button } from "@/ui";
+
+const NODE_SELECTION_BUTTON_STYLE_CLASS = {
+  root: "w-full justify-between",
+  icon: "ml-sm text-neutral-500",
+} as const;
 
 interface NodeSelectionButtonProps {
   nodeDisplayName: string;
@@ -19,14 +24,17 @@ export default function NodeSelectionButton({
   ariaActionLabel,
 }: NodeSelectionButtonProps) {
   return (
-    <button
-      type="button"
+    <Button
       onClick={onClick}
-      style={configFormNodeButtonStyle}
+      variant="outline"
+      size="sm"
+      className={NODE_SELECTION_BUTTON_STYLE_CLASS.root}
       aria-label={`${ariaActionLabel}: ${nodeDisplayName}`}
     >
       <span>{nodeDisplayName}</span>
-      <span aria-hidden>{DIRECTION_ICON[directionIndicator]}</span>
-    </button>
+      <span aria-hidden className={NODE_SELECTION_BUTTON_STYLE_CLASS.icon}>
+        {DIRECTION_ICON[directionIndicator]}
+      </span>
+    </Button>
   );
 }

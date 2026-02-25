@@ -1,8 +1,5 @@
 import type { ChangeEventHandler } from "react";
-import {
-  configFormInputErrorStyle,
-  configFormInputStyle,
-} from "@/constants/formStyles";
+import { SelectInput } from "@/ui";
 
 interface SelectOption {
   optionValue: string;
@@ -26,20 +23,20 @@ export default function ConfigurationSelectInput({
   errorElementId,
   placeholderOptionLabel,
 }: ConfigurationSelectInputProps) {
+  const errorStateClassName = errorMessage
+    ? "border-error-500 focus:ring-error-500 focus:border-error-500"
+    : "";
+
   return (
-    <select
+    <SelectInput
       value={selectedValue}
       onChange={onChange}
-      style={errorMessage ? configFormInputErrorStyle : configFormInputStyle}
+      options={options}
+      placeholderOptionLabel={placeholderOptionLabel}
+      className={errorStateClassName}
+      fullWidth
       aria-invalid={!!errorMessage}
       aria-describedby={errorMessage ? errorElementId : undefined}
-    >
-      {placeholderOptionLabel && <option value="">{placeholderOptionLabel}</option>}
-      {options.map((option) => (
-        <option key={option.optionValue} value={option.optionValue}>
-          {option.optionLabel}
-        </option>
-      ))}
-    </select>
+    />
   );
 }

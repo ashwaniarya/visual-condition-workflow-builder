@@ -71,8 +71,8 @@ export default function WorkFlowValidation() {
       </div>
 
       <div className="p-3 overflow-y-auto custom-scrollbar">
-        <div className={clsx("rounded-md border p-2.5 flex items-start gap-2", getStatusColor(workflowState))}>
-          <div className="shrink-0 mt-0.5">{getStatusIcon(workflowState)}</div>
+        <div className={clsx("rounded-md border p-2.5 flex items-center gap-2.5", getStatusColor(workflowState))}>
+          <div className="shrink-0">{getStatusIcon(workflowState)}</div>
           <div className="space-y-0.5 min-w-0">
             <Typography variant="caption" weight="semibold" className="text-[11px] md:text-[11px] text-neutral-800">
               {workflowState === "VALID" ? "All checks passed" : "Validation Issues"}

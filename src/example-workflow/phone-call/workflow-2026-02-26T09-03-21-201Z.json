@@ -1,0 +1,177 @@
+{
+  "nodes": [
+    {
+      "_type": "start",
+      "id": "start_1",
+      "_nodeConfigState": "VALID_CONFIGURATION",
+      "config": {
+        "name": "Start",
+        "description": "Start node",
+        "prompt": ""
+      },
+      "_uiconfig": {
+        "position": {
+          "x": -105,
+          "y": 8.750000000000028
+        },
+        "portPolicy": [
+          {
+            "direction": "out"
+          }
+        ]
+      }
+    },
+    {
+      "_type": "task",
+      "id": "task-1772095821507",
+      "_nodeConfigState": "VALID_CONFIGURATION",
+      "config": {
+        "name": "Greeting",
+        "description": "Welcome message to a customer call",
+        "prompt": "# Step \n1. Say Hi"
+      },
+      "_uiconfig": {
+        "position": {
+          "x": 181.05214904242132,
+          "y": 64.61646970971663
+        },
+        "portPolicy": [
+          {
+            "direction": "out"
+          }
+        ]
+      }
+    },
+    {
+      "_type": "task",
+      "id": "task-1772095951190",
+      "_nodeConfigState": "VALID_CONFIGURATION",
+      "config": {
+        "name": "Other task",
+        "description": "Some random description",
+        "prompt": ""
+      },
+      "_uiconfig": {
+        "position": {
+          "x": 684.7231593221167,
+          "y": -92.24950571993075
+        },
+        "portPolicy": [
+          {
+            "direction": "out"
+          }
+        ]
+      }
+    },
+    {
+      "_type": "task",
+      "id": "task-1772095956811",
+      "_nodeConfigState": "VALID_CONFIGURATION",
+      "config": {
+        "name": "Abcd",
+        "description": "Some random description",
+        "prompt": ""
+      },
+      "_uiconfig": {
+        "position": {
+          "x": 747.3717917496667,
+          "y": 194.1442425202982
+        },
+        "portPolicy": [
+          {
+            "direction": "out"
+          }
+        ]
+      }
+    },
+    {
+      "_type": "end",
+      "id": "end-1772096000545",
+      "_nodeConfigState": "VALID_CONFIGURATION",
+      "config": {
+        "name": "End",
+        "description": "End node",
+        "prompt": ""
+      },
+      "_uiconfig": {
+        "position": {
+          "x": 1060.6149538874172,
+          "y": -108.35915405844361
+        },
+        "portPolicy": [
+          {
+            "direction": "in"
+          }
+        ]
+      }
+    },
+    {
+      "_type": "end",
+      "id": "end-1772096005547",
+      "_nodeConfigState": "VALID_CONFIGURATION",
+      "config": {
+        "name": "End",
+        "description": "End node",
+        "prompt": ""
+      },
+      "_uiconfig": {
+        "position": {
+          "x": 1073.144680372927,
+          "y": 172.66471140228103
+        },
+        "portPolicy": [
+          {
+            "direction": "in"
+          }
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "_type": "conditionedge",
+      "id": "reactflow__edge-start_1-task-1772095821507",
+      "sourceNodeId": "start_1",
+      "targetNodeId": "task-1772095821507",
+      "config": {},
+      "parameters": {},
+      "condition": "Pass Through"
+    },
+    {
+      "_type": "conditionedge",
+      "id": "reactflow__edge-task-1772095821507-task-1772095951190",
+      "sourceNodeId": "task-1772095821507",
+      "targetNodeId": "task-1772095951190",
+      "config": {},
+      "parameters": {},
+      "condition": "New Customer"
+    },
+    {
+      "_type": "conditionedge",
+      "id": "reactflow__edge-task-1772095821507-task-1772095956811",
+      "sourceNodeId": "task-1772095821507",
+      "targetNodeId": "task-1772095956811",
+      "config": {},
+      "parameters": {},
+      "condition": "Old Customer"
+    },
+    {
+      "_type": "conditionedge",
+      "id": "reactflow__edge-task-1772095951190-end-1772096000545",
+      "sourceNodeId": "task-1772095951190",
+      "targetNodeId": "end-1772096000545",
+      "config": {},
+      "parameters": {},
+      "condition": "pass through"
+    },
+    {
+      "_type": "conditionedge",
+      "id": "reactflow__edge-task-1772095956811-end-1772096005547",
+      "sourceNodeId": "task-1772095956811",
+      "targetNodeId": "end-1772096005547",
+      "config": {},
+      "parameters": {},
+      "condition": "pass through"
+    }
+  ]
+}

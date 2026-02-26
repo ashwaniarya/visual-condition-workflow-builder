@@ -1,6 +1,7 @@
 import type { Edge as ReactFlowEdge, Node as ReactFlowNode } from "reactflow";
 import type { BaseEdge, BaseNode } from "@/domain/model/interface";
 import type { WorkflowPayload } from "@/domain/workflow/schema/workflowSchema";
+import { WORKFLOW_EDGE_TYPES } from "@/shared/constants/workflowEdgeTypes";
 
 function isBaseNode(value: unknown): value is BaseNode {
   return typeof value === "object" && value !== null && "id" in value && "_type" in value;
@@ -46,7 +47,7 @@ export function workflowPayloadToFlow(workflowPayload: WorkflowPayload): {
     id: baseEdge.id,
     source: baseEdge.sourceNodeId,
     target: baseEdge.targetNodeId,
-    type: baseEdge._type || "default",
+    type: baseEdge._type || WORKFLOW_EDGE_TYPES.default,
     data: { baseEdge },
   }));
 

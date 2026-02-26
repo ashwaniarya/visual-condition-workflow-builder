@@ -10,6 +10,7 @@ import {
 import "reactflow/dist/style.css";
 import { CANVAS_GRID, CANVAS_VIEWPORT } from "@/shared/constants/layout";
 import { createInitialWorkflowNodes } from "@/shared/constants/initialWorkflowNodes";
+import { WORKFLOW_EDGE_TYPES } from "@/shared/constants/workflowEdgeTypes";
 import DefaultEdge from "@/presentation/components/edges/DefaultEdge";
 import ConditionEdge from "@/presentation/components/edges/ConditionEdge";
 import { WorkflowNode } from "@/presentation/components/nodes/canvas";
@@ -24,7 +25,10 @@ import {
 const nodeTypes = Object.fromEntries(
   Object.keys(nodeRegistry).map((type) => [type, WorkflowNode])
 );
-const edgeTypes = { default: DefaultEdge, conditionedge: ConditionEdge };
+const edgeTypes = {
+  [WORKFLOW_EDGE_TYPES.default]: DefaultEdge,
+  [WORKFLOW_EDGE_TYPES.condition]: ConditionEdge,
+};
 const canvasAttributionConfiguration = { hideAttribution: true };
 
 function CanvasInner() {

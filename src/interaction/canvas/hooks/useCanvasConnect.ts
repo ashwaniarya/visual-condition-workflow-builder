@@ -9,6 +9,7 @@ import {
   emitCanvasEvent,
   subscribeCanvasEvent,
 } from "@/interaction/canvas/events/canvasEventBus";
+import { WORKFLOW_EDGE_TYPES } from "@/shared/constants/workflowEdgeTypes";
 
 type SetEdges = React.Dispatch<React.SetStateAction<Edge[]>>;
 
@@ -25,7 +26,7 @@ export function useCanvasConnect(setEdges: SetEdges) {
           if (added.length <= eds.length) return added;
           const newEdge = added[added.length - 1];
           const baseEdge: BaseEdge = {
-            _type: "conditionedge",
+            _type: WORKFLOW_EDGE_TYPES.condition,
             id: newEdge.id,
             sourceNodeId: connection.source!,
             targetNodeId: connection.target!,
@@ -35,7 +36,7 @@ export function useCanvasConnect(setEdges: SetEdges) {
           };
           return added.map((e) =>
             e.id === newEdge.id
-              ? { ...e, type: "conditionedge", data: { baseEdge } }
+              ? { ...e, type: WORKFLOW_EDGE_TYPES.condition, data: { baseEdge } }
               : e
           );
         });

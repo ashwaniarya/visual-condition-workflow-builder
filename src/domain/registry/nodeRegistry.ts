@@ -1,4 +1,5 @@
 import { BaseEdge, BaseNode } from "@/domain/model/interface";
+import { WORKFLOW_EDGE_TYPES } from "@/shared/constants/workflowEdgeTypes";
 
 interface NodeRegistry {
   [key: string]: BaseNode;
@@ -42,9 +43,9 @@ const nodeRegistry: NodeRegistry = {
 };
 
 const edgeRegistry: EdgeRegistry = {
-  default: {
-    _type: "default",
-    id: "default",
+  [WORKFLOW_EDGE_TYPES.default]: {
+    _type: WORKFLOW_EDGE_TYPES.default,
+    id: WORKFLOW_EDGE_TYPES.default,
     sourceNodeId: "",
     targetNodeId: "",
     parameters: {},

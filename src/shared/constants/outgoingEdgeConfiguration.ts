@@ -1,3 +1,5 @@
+import { WORKFLOW_EDGE_TYPES } from "@/shared/constants/workflowEdgeTypes";
+
 export const OUTGOING_EDGE_CONFIGURATION_TEXT = {
   title: "Outgoing Edges",
   addEdgeButton: "Add Edge",
@@ -21,5 +23,5 @@ export const OUTGOING_EDGE_CONFIGURATION_IDS = {
 
 export const OUTGOING_EDGE_CONFIGURATION_POLICY = {
   blockedTargetNodeTypes: ["start"] as const,
-  edgeType: "conditionedge",
+  edgeType: WORKFLOW_EDGE_TYPES.condition,
 } as const;

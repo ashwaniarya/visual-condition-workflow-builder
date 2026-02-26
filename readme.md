@@ -85,6 +85,7 @@ flowchart TB
         canvasDragHook[useCanvasDrag]
         canvasConnectHook[useCanvasConnect]
         workflowValidationHook[useWorkflowValidation]
+        canvasEventBus[canvasEventBus]
     end
 
     subgraph stateLayer [StateOwnershipLayer]
@@ -97,7 +98,10 @@ flowchart TB
         registry[NodeRegistryTemplates]
         mapper[WorkflowFlowMapper]
         parser[ParseWorkflowJson]
-        validator[WorkflowValidationRules]
+    end
+
+    subgraph sharedLayer [SharedUtilitiesLayer]
+        validator[computeWorkflowStateAndMessage]
     end
 
     workflowScreen --> workflowHeader
@@ -112,10 +116,14 @@ flowchart TB
     canvasContainer --> canvasDragHook
     canvasContainer --> canvasConnectHook
     canvasContainer --> workflowValidationHook
+    canvasContainer --> canvasEventBus
 
     canvasContainer -->|"owns graph state"| reactFlowState
     canvasSelectionHook -->|"dispatch selection updates"| canvasSliceState
     workflowValidationHook -->|"dispatch workflow validation"| canvasSliceState
+    canvasSelectionHook <-->|"emit and subscribe"| canvasEventBus
+    canvasDragHook <-->|"emit and subscribe"| canvasEventBus
+    canvasConnectHook <-->|"emit and subscribe"| canvasEventBus
 
     configurationPanel -->|"reads selection"| canvasSliceState
     validationViewer -->|"reads workflow status"| canvasSliceState
@@ -130,9 +138,9 @@ flowchart TB
 
     workflowHeader -->|"export maps flow to payload"| mapper
     workflowHeader -->|"import parses payload"| parser
-    parser --> mapper
+    workflowHeader -->|"import maps payload to flow"| mapper
     mapper --> reactFlowState
-    validator --> workflowValidationHook
+    workflowValidationHook -->|"computes validation state"| validator
 ```
 
 ### 🗺️ Legend
@@ -141,7 +149,9 @@ flowchart TB
 - `owns graph state` 🗂️: ReactFlow local nodes and edges are the canvas source of truth.
 - `dispatch ... updates` ⚡: writes into Redux state.
 - `reads ...` 👀: selector based consumption from Redux or ReactFlow state.
+- `emit and subscribe` 📡: canvas hooks coordinate through a shared event bus.
 - `maps / parses` 🔄: domain transformation between graph state and portable workflow JSON payload.
+- `computes validation state` ✅: shared utility derives workflow validity from current graph.
 
 ### 👣 Quick Read Path
 

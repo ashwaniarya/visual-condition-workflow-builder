@@ -14,6 +14,8 @@ The codebase uses a registry pattern with configurable nodes, so we can create d
 
 <img width="956" height="442" alt="image" src="https://github.com/user-attachments/assets/eb540b57-f525-4879-8fae-0082664d4c5f" />
 
+📥 Import sample JSON: Download `phone-call` workflow and load it using **Import JSON** option → [`workflow-2026-02-26T09-03-21-201Z.json`](src/example-workflow/phone-call/workflow-2026-02-26T09-03-21-201Z.json)
+
 
 ## 🎬 Demo 
 

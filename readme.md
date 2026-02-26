@@ -132,91 +132,98 @@ flowchart TB
 
 ## 📁 Folder Structure
 
-Quick glance map for mental model:
-
-### Top-Level Map
+High Level folder structure
 
 ```text
-src/
-├─ App.tsx
-├─ main.tsx
-├─ router.tsx
-├─ screens/
-├─ canvas/
-├─ hooks/
-├─ modal/
-├─ components/
-├─ ui/
-├─ store/
-├─ model/
-├─ registry/
-├─ workflow/
-├─ constants/
-├─ utils/
-├─ lib/
-├─ index.css
-└─ vite-env.d.ts
+visual-worflow-builder-react/
+├─ src/
+│  ├─ entry/
+│  │  ├─ App.tsx
+│  │  └─ router.tsx
+│  ├─ presentation/
+│  │  ├─ components/
+│  │  │  ├─ edges/
+│  │  │  ├─ modals/
+│  │  │  ├─ nodes/
+│  │  │  │  ├─ canvas/
+│  │  │  │  ├─ configuration/
+│  │  │  │  │  └─ primitives/
+│  │  │  │  └─ palette/
+│  │  │  ├─ toast/
+│  │  │  ├─ ConfigurationPanel.tsx
+│  │  │  ├─ NodePalette.tsx
+│  │  │  ├─ WorkFlowHeader.tsx
+│  │  │  ├─ WorkFlowJsonViewer.tsx
+│  │  │  ├─ WorkFlowValidation.tsx
+│  │  │  └─ WorkflowViewer.tsx
+│  │  └─ screens/
+│  │     ├─ DesignSystemScreen.tsx
+│  │     ├─ UITestPlaygroundScreen.tsx
+│  │     └─ WorkflowScreen.tsx
+│  ├─ interaction/
+│  │  ├─ canvas/
+│  │  │  ├─ events/
+│  │  │  ├─ hooks/
+│  │  │  └─ CanvasContainer.tsx
+│  │  └─ hooks/
+│  ├─ state/
+│  │  └─ store/
+│  ├─ domain/
+│  │  ├─ model/
+│  │  ├─ registry/
+│  │  └─ workflow/
+│  │     ├─ constants/
+│  │     ├─ io/
+│  │     ├─ mapping/
+│  │     ├─ parser/
+│  │     ├─ schema/
+│  │     ├─ serialization/
+│  │     └─ index.ts
+│  ├─ design-system/
+│  │  └─ ui/
+│  │     ├─ atoms/
+│  │     ├─ components/
+│  │     └─ internal/
+│  │        └─ animate-ui/
+│  │           ├─ components/
+│  │           └─ primitives/
+│  ├─ shared/
+│  │  ├─ constants/
+│  │  ├─ lib/
+│  │  └─ utils/
+│  ├─ modal/
+│  ├─ utils/
+│  ├─ index.css
+│  └─ main.tsx
+├─ components.json
+├─ package.json
+└─ readme.md
 ```
 
-### Layer Intent
+For details context of folder structure move to.
 
-- **Entry and navigation**: `main.tsx`, `App.tsx`, `router.tsx`, `screens/` define app boot and screen routing.
-- **Interaction and canvas**: `canvas/`, `hooks/`, `modal/` handle user input, canvas behavior, and modal interaction flow.
-- **Presentation**: `components/`, `ui/` render feature UI and design-system primitives.
-- **State and domain**: `store/`, `model/`, `registry/`, `workflow/` hold state orchestration and workflow rules.
-- **Shared utilities**: `constants/`, `utils/`, `lib/` provide global config, reusable helpers, and shared primitives.
+Canonical map (for humans + AI): `docs/folder-and-file-map.md`
 
-### Canvas Focus
+## Design Pattern Choises
 
-```text
-canvas/
-├─ events/
-│  ├─ canvasEventBus.ts
-│  ├─ canvasEventTypes.ts
-│  └─ index.ts
-├─ hooks/
-│  ├─ useCanvasConnect.ts
-│  ├─ useCanvasDrag.ts
-│  ├─ useCanvasSelection.ts
-│  ├─ useValidationIssueList.ts
-│  ├─ useWorkflowValidation.ts
-│  └─ index.ts
-└─ CanvasContainer.tsx
-```
+1. A node and edge interface design
+   Node - Generic node interface that have futher specialise - State to check if a node was configured or not - Has ablity to define input and output ports definition - store basic ui level details to -
 
-### Workflow Focus
+   Edge - Geric base node interface that can be futher specialise
 
-```text
-workflow/
-├─ constants/
-├─ io/
-├─ mapping/
-├─ parser/
-├─ schema/
-├─ serialization/
-└─ index.ts
-```
+2. Edge and Node Registry - This acts as a central state where all node can be simple create and will used. -
+3. Component design -
+   - Compontent are design using composition pattern with seperation of concen to increase reusablity.
+4. Custom Hooks - Busines logic are added into hooks so that only parts of code has be changed.
 
-### Dependency Direction Rules
+5. Performation optimisation:
 
-```mermaid
-flowchart LR
-    entryLayer[EntryAndNavigation]
-    interactionLayer[InteractionAndCanvas]
-    presentationLayer[Presentation]
-    stateDomainLayer[StateAndDomain]
-    sharedLayer[SharedUtilities]
+- Controlled reactivity using debouncing
+- Controlled rendering of Configuration Panel
 
-    entryLayer --> interactionLayer
-    presentationLayer --> interactionLayer
-    interactionLayer --> stateDomainLayer
-    presentationLayer --> stateDomainLayer
-    stateDomainLayer --> sharedLayer
-    interactionLayer --> sharedLayer
-    presentationLayer --> sharedLayer
-```
-
-Keep dependencies mostly one-way (toward `state/domain` and `shared`) to preserve separation and quick traceability.
+5. All the values comes from contants so that it easy to be change. Also futher language specific system can be easily built.
+6. JSON import has validation inbuild to check if incoming in proper shape. Also it can be easly extended in case checksum base check is needed to be added.
+7. Clean modern ui with context based interaction
 
 ### 📡 Canvas Event Bus
 

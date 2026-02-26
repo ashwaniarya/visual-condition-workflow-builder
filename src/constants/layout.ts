@@ -2,8 +2,25 @@
  * Centralized layout and UI constants
  */
 export const LAYOUT = {
-  nodePaletteWidth: 200,
   configurationPanelWidth: 280,
+} as const
+
+/**
+ * Split layout constants
+ */
+export const SPLIT_LAYOUT = {
+  gutterSize: 8,
+  minSizes: {
+    configurationPanel: 280,
+    center: 400,
+    canvas: 300,
+    workflowViewer: 100,
+  },
+  snapOffset: 30,
+  initialSizes: {
+    horizontal: [80, 20], // Canvas, Config
+    vertical: [70, 30], // Canvas, Viewer
+  },
 } as const
 
 /**
@@ -16,9 +33,20 @@ export const CANVAS_GRID = {
 } as const
 
 /**
+ * Canvas viewport/zoom constants
+ */
+export const CANVAS_VIEWPORT = {
+  minZoom: 0.1,
+  maxZoom: 2,
+  fitViewPadding: 0.2,
+  defaultZoom: 0.8, // Initial zoom level
+} as const
+
+/**
  * WorkflowViewer constants (JSON display, syntax highlighting)
  */
 export const WORKFLOW_VIEWER = {
   jsonIndentSpaces: 2,
-  height: 100,
+  jsonUpdateDebounceMs: 500,
+  height: 100, // Minimal height, actual height controlled by Split
 } as const

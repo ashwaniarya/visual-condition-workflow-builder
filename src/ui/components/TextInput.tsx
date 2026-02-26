@@ -17,9 +17,9 @@ interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'si
 }
 
 const SIZE_CLASSES: Record<TextInputSize, string> = {
-  sm: 'px-sm py-xs text-sm',
-  md: 'px-md py-sm text-base',
-  lg: 'px-lg py-md text-lg',
+  sm: 'px-2 py-1 text-xs h-7',
+  md: 'px-3 py-1.5 text-sm h-9',
+  lg: 'px-4 py-2 text-base h-11',
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
@@ -39,14 +39,14 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, '-')
 
     const inputClassName = cn(
-      'block rounded-lg border bg-white transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
-      'placeholder:text-neutral-400',
+      'block rounded-md border bg-white transition-all duration-200 shadow-sm',
+      'focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500',
+      'placeholder:text-neutral-400 text-neutral-900',
       SIZE_CLASSES[inputSize],
       error
-        ? 'border-error-500 focus:ring-error-500 focus:border-error-500'
+        ? 'border-error-500 focus:ring-error-500/20 focus:border-error-500'
         : 'border-neutral-300 hover:border-neutral-400',
-      disabled && 'bg-neutral-100 text-neutral-400 cursor-not-allowed',
+      disabled && 'bg-neutral-50 text-neutral-400 cursor-not-allowed border-neutral-200',
       fullWidth && 'w-full',
       className,
     )
@@ -61,7 +61,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block mb-xs text-sm font-medium text-neutral-700"
+            className="block mb-1.5 text-xs font-semibold text-neutral-700 uppercase tracking-wide"
           >
             {label}
           </label>
@@ -74,7 +74,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           {...inputProps}
         />
         {error && (
-          <p className="mt-xs text-sm text-error-600">{error}</p>
+          <p className="mt-1 text-xs text-error-600 font-medium">{error}</p>
         )}
       </motion.div>
     )

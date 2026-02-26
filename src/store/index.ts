@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import canvasReducer from '@/store/canvasSlice'
+import globalUiActionsReducer from '@/store/globalUiActionsSlice'
 export const store = configureStore({
   reducer: {
     canvas: canvasReducer,
+    globalUiActions: globalUiActionsReducer,
   },
 })
 

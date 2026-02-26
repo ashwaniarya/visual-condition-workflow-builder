@@ -1,41 +1,66 @@
+import Split from "react-split";
 import { ReactFlowProvider } from "reactflow";
 import CanvasContainer from "@/canvas/CanvasContainer";
-import CanvasHeader from "@/components/CanvasHeader";
+import WorkFlowHeader from "@/components/WorkFlowHeader";
 import ConfigurationPanel from "@/components/ConfigurationPanel";
+import GlobalModalHost from "@/components/modals/GlobalModalHost";
 import NodePalette from "@/components/NodePalette";
+import GlobalToastHost from "@/components/toast/GlobalToastHost";
 import WorkflowViewer from "@/components/WorkflowViewer";
-import { LAYOUT, WORKFLOW_VIEWER } from "@/constants/layout";
+import { SPLIT_LAYOUT } from "@/constants/layout";
 
 export default function WorkflowScreen() {
   return (
     <ReactFlowProvider>
-      <div className="flex h-screen overflow-hidden">
-        <aside
-          className="shrink-0 overflow-y-auto border-r border-neutral-200"
-          style={{ width: LAYOUT.nodePaletteWidth }}
+      <div className="h-screen w-screen overflow-hidden bg-background">
+        <Split
+          className="flex h-full w-full"
+          sizes={[...SPLIT_LAYOUT.initialSizes.horizontal]}
+          minSize={[
+            SPLIT_LAYOUT.minSizes.center,
+            SPLIT_LAYOUT.minSizes.configurationPanel,
+          ]}
+          gutterSize={SPLIT_LAYOUT.gutterSize}
+          snapOffset={SPLIT_LAYOUT.snapOffset}
+          direction="horizontal"
+          cursor="col-resize"
         >
-          <NodePalette />
-        </aside>
-        <main className="min-w-0 flex-1">
-          <div className="flex h-full flex-col">
-            <CanvasHeader />
-            <div className="flex-1">
-              <CanvasContainer />
+          <main className="flex h-full min-w-0 flex-col bg-background/50">
+            <WorkFlowHeader />
+            <div className="flex-1 overflow-hidden relative">
+              <Split
+                className="h-full w-full"
+                direction="vertical"
+                sizes={[...SPLIT_LAYOUT.initialSizes.vertical]}
+                minSize={[
+                  SPLIT_LAYOUT.minSizes.canvas,
+                  SPLIT_LAYOUT.minSizes.workflowViewer,
+                ]}
+                gutterSize={SPLIT_LAYOUT.gutterSize}
+                snapOffset={SPLIT_LAYOUT.snapOffset}
+                cursor="row-resize"
+              >
+                <div className="h-full w-full overflow-hidden relative">
+                  <div className="absolute top-4 left-4 z-50 max-h-[calc(100%-2rem)] overflow-y-auto custom-scrollbar">
+                    <NodePalette />
+                  </div>
+                  <CanvasContainer />
+                </div>
+                <div className="h-full w-full overflow-hidden bg-card border-t border-border">
+                  <WorkflowViewer />
+                </div>
+              </Split>
             </div>
-            <div
-              className="overflow-hidden"
-              style={{ height: WORKFLOW_VIEWER.height }}
-            >
-              <WorkflowViewer />
+          </main>
+
+          <aside className="h-full overflow-hidden bg-sidebar border-l border-border">
+            <div className="h-full overflow-y-auto">
+              <ConfigurationPanel />
             </div>
-          </div>
-        </main>
-        <aside
-          className="flex shrink-0 flex-col overflow-hidden border-l border-neutral-200"
-          style={{ width: LAYOUT.configurationPanelWidth }}
-        >
-          <ConfigurationPanel />
-        </aside>
+          </aside>
+        </Split>
+        <GlobalModalHost />
+        <GlobalToastHost />
       </div>
     </ReactFlowProvider>
   );

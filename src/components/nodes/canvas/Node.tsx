@@ -2,10 +2,18 @@ import { useState, useCallback } from "react";
 import { useReactFlow } from "reactflow";
 import type { NodeProps } from "reactflow";
 import type { BaseNode } from "@/model/interface";
+import { Trash2 } from "lucide-react";
 import {
   PROTECTED_NODE_TYPES,
   DELETE_BUTTON_OFFSET,
 } from "@/constants/deletionConfig";
+import {
+  NODE_BORDER_RADIUS,
+  NODE_TYPE_ACCENTS,
+  SELECTED_NODE_SHADOW,
+  SELECTED_NODE_BORDER_COLOR,
+  SELECTED_NODE_BORDER_WIDTH,
+} from "@/constants/nodeStyles";
 import { IconButton } from "@/ui";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +24,7 @@ import TaskNode from "./TaskNode";
 type NodeData = { baseNode: BaseNode };
 
 export default function Node(props: NodeProps<NodeData>) {
-  const { id, data } = props;
+  const { id, data, selected } = props;
   const baseNode = data.baseNode;
   const isInvalid = baseNode._nodeConfigState === "INVALID_CONFIGURATION";
   const [isHovered, setIsHovered] = useState(false);
@@ -37,30 +45,57 @@ export default function Node(props: NodeProps<NodeData>) {
   );
 
   const InnerNode = getInnerNode(baseNode._type);
+  const accentColor = NODE_TYPE_ACCENTS[baseNode._type] || "var(--neutral-200)";
+
+  // Determine styles based on state
+  const borderColor = isInvalid
+    ? "var(--destructive)"
+    : selected
+    ? SELECTED_NODE_BORDER_COLOR
+    : accentColor;
+
+  // Fixed border width to prevent layout shift
+  const borderWidth = SELECTED_NODE_BORDER_WIDTH;
+  const shadow = selected ? SELECTED_NODE_SHADOW : "var(--shadow-sm)";
 
   return (
     <div
       className={cn(
-        "relative overflow-visible rounded-lg border-2",
-        isInvalid ? "border-warning-500 ring-2 ring-warning-500/20" : "border-neutral-200",
+        "relative overflow-visible transition-all duration-200 bg-white box-border",
+        selected && "z-10" // Lift z-index when selected so shadow is visible above others
       )}
+      style={{
+        borderRadius: NODE_BORDER_RADIUS,
+        borderWidth: borderWidth,
+        borderColor: borderColor,
+        borderStyle: "solid",
+        boxShadow: shadow,
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="overflow-hidden rounded-lg">
+      <div className="w-full h-full">
         <InnerNode {...props} />
       </div>
+      
       {isHovered && isDeletable && (
         <IconButton
           type="button"
-          icon={<span className="text-sm leading-none">×</span>}
+          icon={<Trash2 className="h-4 w-4" />}
           variant="neutral"
           iconButtonSize="sm"
           aria-label="Delete node"
-          className="nodrag nopan absolute"
+          className="nodrag nopan absolute bg-white shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200"
           style={{ top: DELETE_BUTTON_OFFSET, right: DELETE_BUTTON_OFFSET }}
           onClick={handleDeleteClick}
         />
+      )}
+      
+      {isInvalid && (
+         <div 
+            className="absolute inset-0 ring-2 ring-destructive/20 pointer-events-none"
+            style={{ borderRadius: NODE_BORDER_RADIUS }}
+         />
       )}
     </div>
   );

@@ -11,6 +11,8 @@ import ConfigurationField from "@/components/nodes/configuration/primitives/Conf
 import ConfigurationTextInput from "@/components/nodes/configuration/primitives/ConfigurationTextInput";
 import ConfigurationSelectInput from "@/components/nodes/configuration/primitives/ConfigurationSelectInput";
 import { Button, Typography } from "@/ui";
+import { ArrowRight, Trash2, Plus, Share2, AlertCircle } from "lucide-react";
+import { clsx } from "clsx";
 
 interface OutgoingEdgeAddFormErrors {
   conditionError: string | null;
@@ -67,141 +69,171 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
 
   return (
     <div className="flex flex-col gap-3">
-      <Typography variant="caption" weight="semibold" className="mt-1">
-        {OUTGOING_EDGE_CONFIGURATION_TEXT.title}
-      </Typography>
-
-      {outgoingFlowEdges.length === 0 && (
-        <Typography variant="caption" className="text-neutral-500">
-          {OUTGOING_EDGE_CONFIGURATION_TEXT.emptyState}
+      <div className="flex items-center gap-2 text-neutral-600">
+        <Share2 className="w-4 h-4" />
+        <Typography variant="caption" weight="semibold">
+          {OUTGOING_EDGE_CONFIGURATION_TEXT.title}
         </Typography>
+      </div>
+
+      {outgoingFlowEdges.length === 0 && !isAddEdgeFormVisible && (
+        <div className="flex flex-col items-center justify-center py-6 px-4 rounded-lg border border-dashed border-neutral-200 bg-neutral-50/50">
+          <Typography variant="caption" className="text-neutral-500 text-center mb-2">
+            {OUTGOING_EDGE_CONFIGURATION_TEXT.emptyState}
+          </Typography>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onOpenAddEdgeForm}
+            disabled={validTargetNodes.length === 0}
+            className="h-8 text-xs"
+          >
+            <Plus className="w-3.5 h-3.5 mr-1.5" />
+            Add Flow
+          </Button>
+        </div>
       )}
 
-      {outgoingFlowEdges.map((flowEdge) => {
-        const baseEdge = flowEdge.data?.baseEdge;
-        if (!baseEdge) return null;
-        const rowConditionValidation = validateEdgeCondition(
-          baseEdge.condition ?? ""
-        );
-        return (
-          <div
-            key={flowEdge.id}
-            className="flex flex-col gap-2 rounded-md border border-neutral-200 p-2"
-          >
-            <ConfigurationField
-              labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.conditionLabel}
-              errorMessage={rowConditionValidation.conditionError}
-            >
-              <ConfigurationTextInput
-                value={baseEdge.condition ?? ""}
-                onChange={(event) =>
-                  onUpdateOutgoingEdgeCondition(
-                    flowEdge.id,
-                    event.target.value
-                  )
-                }
-                placeholderText={
-                  OUTGOING_EDGE_CONFIGURATION_TEXT.addConditionPlaceholder
-                }
-                errorMessage={rowConditionValidation.conditionError}
-              />
-            </ConfigurationField>
+      {/* Existing Edges List */}
+      {outgoingFlowEdges.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {outgoingFlowEdges.map((flowEdge) => {
+            const baseEdge = flowEdge.data?.baseEdge;
+            if (!baseEdge) return null;
+            const rowConditionValidation = validateEdgeCondition(
+              baseEdge.condition ?? ""
+            );
+            const hasError = !!rowConditionValidation.conditionError;
 
-            <ConfigurationField
-              labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.targetLabel}
-            >
-              <ConfigurationSelectInput
-                selectedValue={baseEdge.targetNodeId}
-                onChange={(event) =>
-                  onUpdateOutgoingEdgeTarget(flowEdge.id, event.target.value)
-                }
-                options={targetNodeOptions}
-                placeholderOptionLabel={
-                  OUTGOING_EDGE_CONFIGURATION_TEXT.noTargetOption
-                }
-              />
-            </ConfigurationField>
+            return (
+              <div
+                key={flowEdge.id}
+                className={clsx(
+                  "group flex items-center gap-2 p-1.5 rounded-md border bg-white transition-all duration-200",
+                  hasError ? "border-red-200 shadow-sm" : "border-neutral-200 hover:border-neutral-300"
+                )}
+              >
+                {/* Condition Input */}
+                <div className="flex-1 relative min-w-[100px]">
+                  <input
+                    type="text"
+                    value={baseEdge.condition ?? ""}
+                    onChange={(e) => onUpdateOutgoingEdgeCondition(flowEdge.id, e.target.value)}
+                    placeholder="Condition..."
+                    className={clsx(
+                      "w-full h-8 px-2 text-sm rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 placeholder:text-neutral-400 transition-colors",
+                      hasError && "bg-red-50 text-red-900 placeholder:text-red-300"
+                    )}
+                  />
+                  {hasError && (
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 text-red-500" title={rowConditionValidation.conditionError || ""}>
+                      <AlertCircle className="w-3.5 h-3.5" />
+                    </div>
+                  )}
+                </div>
 
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => onRemoveOutgoingEdge(flowEdge.id)}
-              className="self-start"
-            >
-              {OUTGOING_EDGE_CONFIGURATION_TEXT.removeEdgeButton}
-            </Button>
-          </div>
-        );
-      })}
+                <ArrowRight className="w-4 h-4 text-neutral-300 shrink-0" />
 
-      {!isAddEdgeFormVisible && (
+                {/* Target Select */}
+                <div className="flex-1 min-w-[120px]">
+                  <select
+                    value={baseEdge.targetNodeId}
+                    onChange={(e) => onUpdateOutgoingEdgeTarget(flowEdge.id, e.target.value)}
+                    className="w-full h-8 px-2 text-sm rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 text-neutral-700 cursor-pointer transition-colors appearance-none"
+                  >
+                    <option value="" disabled>Select target...</option>
+                    {targetNodeOptions.map((opt) => (
+                      <option key={opt.optionValue} value={opt.optionValue}>
+                        {opt.optionLabel}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Delete Button */}
+                <button
+                  type="button"
+                  onClick={() => onRemoveOutgoingEdge(flowEdge.id)}
+                  className="p-1.5 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  title={OUTGOING_EDGE_CONFIGURATION_TEXT.removeEdgeButton}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Add Edge Button (if edges exist and form not visible) */}
+      {outgoingFlowEdges.length > 0 && !isAddEdgeFormVisible && (
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           size="sm"
           onClick={onOpenAddEdgeForm}
           disabled={validTargetNodes.length === 0}
-          title={
-            validTargetNodes.length === 0
-              ? OUTGOING_EDGE_CONFIGURATION_TEXT.noValidTargetNodes
-              : undefined
-          }
-          className="self-start"
+          className="self-start text-neutral-500 hover:text-neutral-800 h-8 px-2"
         >
+          <Plus className="w-4 h-4 mr-1.5" />
           {OUTGOING_EDGE_CONFIGURATION_TEXT.addEdgeButton}
         </Button>
       )}
 
+      {/* Add Edge Form */}
       {isAddEdgeFormVisible && (
-        <div className="flex flex-col gap-2 rounded-md border border-neutral-200 p-2">
-          <Typography variant="caption" className="text-neutral-500">
-            {OUTGOING_EDGE_CONFIGURATION_TEXT.addFormHint}
-          </Typography>
+        <div className="flex flex-col gap-3 p-3 rounded-lg border border-neutral-200 bg-neutral-50/50 mt-1 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center justify-between">
+             <Typography variant="caption" weight="semibold" className="text-neutral-700">
+               New Flow
+             </Typography>
+             <button onClick={onCloseAndResetAddEdgeForm} className="text-neutral-400 hover:text-neutral-600">
+               <span className="sr-only">Close</span>
+               {/* Could use an X icon here if needed, but text buttons below handle it */}
+             </button>
+          </div>
 
-          <ConfigurationField
-            labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.conditionLabel}
-            errorMessage={addFormErrors.conditionError}
-            errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addConditionError}
-          >
-            <ConfigurationTextInput
-              value={draftConditionText}
-              onChange={(event) => onDraftConditionChange(event.target.value)}
-              placeholderText={
-                OUTGOING_EDGE_CONFIGURATION_TEXT.addConditionPlaceholder
-              }
-              errorMessage={addFormErrors.conditionError}
-              errorElementId={
-                OUTGOING_EDGE_CONFIGURATION_IDS.addConditionError
-              }
-            />
-          </ConfigurationField>
+          <div className="flex flex-col gap-3">
+             <ConfigurationField
+               labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.conditionLabel}
+               errorMessage={addFormErrors.conditionError}
+               errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addConditionError}
+             >
+               <ConfigurationTextInput
+                 value={draftConditionText}
+                 onChange={(event) => onDraftConditionChange(event.target.value)}
+                 placeholderText="e.g., status == 'approved'"
+                 errorMessage={addFormErrors.conditionError}
+                 errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addConditionError}
+               />
+             </ConfigurationField>
+   
+             <ConfigurationField
+               labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.targetLabel}
+               errorMessage={addFormErrors.targetError}
+               errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addTargetError}
+             >
+               <ConfigurationSelectInput
+                 selectedValue={draftTargetNodeId}
+                 onChange={(event) => onDraftTargetChange(event.target.value)}
+                 options={targetNodeOptions}
+                 errorMessage={addFormErrors.targetError}
+                 errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addTargetError}
+                 placeholderOptionLabel={OUTGOING_EDGE_CONFIGURATION_TEXT.noTargetOption}
+               />
+             </ConfigurationField>
+          </div>
 
-          <ConfigurationField
-            labelText={OUTGOING_EDGE_CONFIGURATION_TEXT.targetLabel}
-            errorMessage={addFormErrors.targetError}
-            errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addTargetError}
-          >
-            <ConfigurationSelectInput
-              selectedValue={draftTargetNodeId}
-              onChange={(event) => onDraftTargetChange(event.target.value)}
-              options={targetNodeOptions}
-              errorMessage={addFormErrors.targetError}
-              errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addTargetError}
-              placeholderOptionLabel={
-                OUTGOING_EDGE_CONFIGURATION_TEXT.noTargetOption
-              }
-            />
-          </ConfigurationField>
-
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-end mt-1">
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={onCloseAndResetAddEdgeForm}
+              className="text-neutral-500"
             >
-              {OUTGOING_EDGE_CONFIGURATION_TEXT.cancelAddButton}
+              Cancel
             </Button>
             <Button
               type="button"
@@ -209,7 +241,7 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
               size="sm"
               onClick={onSubmitAddEdgeForm}
             >
-              {OUTGOING_EDGE_CONFIGURATION_TEXT.confirmAddButton}
+              Add Flow
             </Button>
           </div>
         </div>

@@ -7,6 +7,8 @@ export type PaletteItemComponent = React.ComponentType<{
   nodeType: string;
   baseNode: BaseNode;
   onDragStart: (event: React.DragEvent, nodeType: string) => void;
+  onDragEnd: () => void;
+  isDragging: boolean;
 }>;
 
 export const paletteNodeRegistry: Record<string, PaletteItemComponent> = {

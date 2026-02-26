@@ -9,6 +9,7 @@ import ConfigurationField from "@/components/nodes/configuration/primitives/Conf
 import ConfigurationTextInput from "@/components/nodes/configuration/primitives/ConfigurationTextInput";
 import NodeSelectionButton from "@/components/nodes/configuration/primitives/NodeSelectionButton";
 import { Typography } from "@/ui";
+import { ArrowLeftRight } from "lucide-react";
 
 interface EdgeConfigurationProps {
   selectedEdge: BaseEdge;
@@ -72,40 +73,47 @@ export default function EdgeConfiguration({
   };
 
   return (
-    <div className="p-4">
-      <Typography variant="body" weight="semibold" className="mb-4 text-sm">
-        {EDGE_CONFIGURATION_TEXT.title}
-      </Typography>
-      <div className="flex flex-col gap-3">
-        <ConfigurationField labelText={EDGE_CONFIGURATION_TEXT.sourceLabel}>
-          <NodeSelectionButton
-            directionIndicator="left"
-            onClick={handleSelectSourceNode}
-            ariaActionLabel={EDGE_CONFIGURATION_TEXT.sourceSelectionActionLabel}
-            nodeDisplayName={getNodeDisplayName(sourceNode, sourceNodeId)}
-          />
-        </ConfigurationField>
-        <ConfigurationField
-          labelText={EDGE_CONFIGURATION_TEXT.conditionLabel}
-          errorMessage={validation.conditionError}
-          errorElementId={EDGE_CONFIGURATION_TEXT.conditionErrorElementId}
-        >
-          <ConfigurationTextInput
-            value={condition}
-            onChange={handleConditionChange}
-            placeholderText={EDGE_CONFIGURATION_TEXT.conditionPlaceholder}
+    <div className="m-3 rounded-lg border border-neutral-200 bg-white shadow-sm relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-neutral-200" />
+      
+      <div className="p-4 pt-5">
+        <div className="flex items-center gap-2 mb-4">
+          <ArrowLeftRight className="w-5 h-5 text-neutral-500" />
+          <Typography variant="h4" weight="bold" className="text-neutral-800 tracking-tight">
+            {EDGE_CONFIGURATION_TEXT.title}
+          </Typography>
+        </div>
+        <div className="flex flex-col gap-4">
+          <ConfigurationField labelText={EDGE_CONFIGURATION_TEXT.sourceLabel}>
+            <NodeSelectionButton
+              directionIndicator="left"
+              onClick={handleSelectSourceNode}
+              ariaActionLabel={EDGE_CONFIGURATION_TEXT.sourceSelectionActionLabel}
+              nodeDisplayName={getNodeDisplayName(sourceNode, sourceNodeId)}
+            />
+          </ConfigurationField>
+          <ConfigurationField
+            labelText={EDGE_CONFIGURATION_TEXT.conditionLabel}
             errorMessage={validation.conditionError}
             errorElementId={EDGE_CONFIGURATION_TEXT.conditionErrorElementId}
-          />
-        </ConfigurationField>
-        <ConfigurationField labelText={EDGE_CONFIGURATION_TEXT.targetLabel}>
-          <NodeSelectionButton
-            directionIndicator="right"
-            onClick={handleSelectTargetNode}
-            ariaActionLabel={EDGE_CONFIGURATION_TEXT.targetSelectionActionLabel}
-            nodeDisplayName={getNodeDisplayName(targetNode, targetNodeId)}
-          />
-        </ConfigurationField>
+          >
+            <ConfigurationTextInput
+              value={condition}
+              onChange={handleConditionChange}
+              placeholderText={EDGE_CONFIGURATION_TEXT.conditionPlaceholder}
+              errorMessage={validation.conditionError}
+              errorElementId={EDGE_CONFIGURATION_TEXT.conditionErrorElementId}
+            />
+          </ConfigurationField>
+          <ConfigurationField labelText={EDGE_CONFIGURATION_TEXT.targetLabel}>
+            <NodeSelectionButton
+              directionIndicator="right"
+              onClick={handleSelectTargetNode}
+              ariaActionLabel={EDGE_CONFIGURATION_TEXT.targetSelectionActionLabel}
+              nodeDisplayName={getNodeDisplayName(targetNode, targetNodeId)}
+            />
+          </ConfigurationField>
+        </div>
       </div>
     </div>
   );

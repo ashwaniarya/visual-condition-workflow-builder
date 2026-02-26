@@ -2,7 +2,7 @@
  * Centralized configuration for node delete and edge remove UI.
  */
 
-export const PROTECTED_NODE_TYPES = ["start", "end"] as const;
+export const PROTECTED_NODE_TYPES = ["start"] as const;
 
 export const DELETE_BUTTON_SIZE = 20;
 

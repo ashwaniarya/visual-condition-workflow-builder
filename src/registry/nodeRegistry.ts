@@ -12,11 +12,9 @@ const nodeRegistry: NodeRegistry = {
   start: {
     _type: "start",
     id: "start",
-    config: { name: "Start", description: "Start node" },
+    config: { name: "Start", description: "Start node", prompt: "" },
     _nodeConfigState: "VALID_CONFIGURATION",
     _uiconfig: {
-      width: 100,
-      height: 100,
       position: { x: 0, y: 0 },
       portPolicy: [{ direction: "out" }],
     },
@@ -24,11 +22,9 @@ const nodeRegistry: NodeRegistry = {
   task: {
     _type: "task",
     id: "task",
-    config: { name: "", description: "" },
+    config: { name: "", description: "", prompt: "" },
     _nodeConfigState: "INVALID_CONFIGURATION",
     _uiconfig: {
-      width: 100,
-      height: 100,
       position: { x: 0, y: 0 },
       portPolicy: [{ direction: "out" }],
     },
@@ -36,11 +32,9 @@ const nodeRegistry: NodeRegistry = {
   end: {
     _type: "end",
     id: "end",
-    config: { name: "End", description: "End node" },
+    config: { name: "End", description: "End node", prompt: "" },
     _nodeConfigState: "VALID_CONFIGURATION",
     _uiconfig: {
-      width: 100,
-      height: 100,
       position: { x: 0, y: 0 },
       portPolicy: [{ direction: "in" }],
     },

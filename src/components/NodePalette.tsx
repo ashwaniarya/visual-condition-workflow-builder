@@ -3,6 +3,8 @@ import type { BaseNode } from "@/model/interface";
 import { paletteNodeRegistry } from "@/components/nodes/palette";
 import { DRAG_DATA_TYPE } from "@/constants/dragConfig";
 import { Typography } from "@/ui";
+import { GripHorizontal } from "lucide-react";
+import { useState } from "react";
 
 function handleDragStart(event: React.DragEvent, nodeType: string) {
   event.dataTransfer.setData(DRAG_DATA_TYPE, nodeType);
@@ -10,23 +12,42 @@ function handleDragStart(event: React.DragEvent, nodeType: string) {
 }
 
 export default function NodePalette() {
-  const entries = Object.entries(nodeRegistry) as [string, BaseNode][];
+  const [draggingNodeType, setDraggingNodeType] = useState<string | null>(null);
+
+  function handlePaletteDragStart(event: React.DragEvent, nodeType: string) {
+    handleDragStart(event, nodeType);
+    setDraggingNodeType(nodeType);
+  }
+
+  function handlePaletteDragEnd() {
+    setDraggingNodeType(null);
+  }
+
+  const entries = (Object.entries(nodeRegistry) as [string, BaseNode][]).filter(
+    ([type]) => type !== "start"
+  );
 
   return (
-    <div className="p-sm">
-      <Typography variant="caption" weight="semibold" className="mb-sm block">
-        Nodes
-      </Typography>
-      <ul className="list-none m-0 p-0 flex flex-col gap-sm">
+    <div className="bg-white/95 backdrop-blur-sm border border-neutral-200 rounded-lg shadow-lg p-3 w-48 flex flex-col gap-3">
+      <div className="flex items-center gap-2 pb-2 border-b border-neutral-100">
+        <GripHorizontal className="w-4 h-4 text-neutral-400" />
+        <Typography variant="caption" weight="bold" className="text-neutral-500 uppercase tracking-wider text-[10px]">
+          Components
+        </Typography>
+      </div>
+      
+      <ul className="list-none m-0 p-0 flex flex-col gap-2">
         {entries.map(([nodeType, baseNode]) => {
           const PaletteItem =
             paletteNodeRegistry[nodeType] ?? paletteNodeRegistry.task;
           return (
-            <li key={nodeType} className="list-none">
+            <li key={nodeType} className="list-none transition-transform duration-200 hover:-translate-y-0.5">
               <PaletteItem
                 nodeType={nodeType}
                 baseNode={baseNode}
-                onDragStart={handleDragStart}
+                onDragStart={handlePaletteDragStart}
+                onDragEnd={handlePaletteDragEnd}
+                isDragging={draggingNodeType === nodeType}
               />
             </li>
           );

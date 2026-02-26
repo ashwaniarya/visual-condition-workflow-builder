@@ -1,5 +1,6 @@
 import { memo, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { Trash2 } from "lucide-react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -81,11 +82,11 @@ function ConditionEdge({
             {isLabelHovered && (
               <IconButton
                 type="button"
-                icon={<span className="text-sm leading-none">×</span>}
+                icon={<Trash2 className="h-3.5 w-3.5" />}
                 variant="neutral"
                 iconButtonSize="sm"
                 aria-label="Remove edge"
-                className="nodrag nopan absolute right-0 top-0"
+                className="nodrag nopan absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 bg-white shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200"
                 onClick={handleRemoveClick}
               />
             )}

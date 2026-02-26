@@ -6,6 +6,7 @@ import {
 import { addEdge, useReactFlow, useStore } from "reactflow";
 import type { BaseEdge, BaseNode } from "@/model/interface";
 import type { Edge } from "reactflow";
+import { Settings2 } from "lucide-react";
 import {
   DEFAULT_BORDER_COLOR,
   INVALID_BORDER_COLOR,
@@ -13,6 +14,7 @@ import {
 } from "@/constants/nodeStyles";
 import ConfigurationField from "@/components/nodes/configuration/primitives/ConfigurationField";
 import ConfigurationTextInput from "@/components/nodes/configuration/primitives/ConfigurationTextInput";
+import ConfigurationTextArea from "@/components/nodes/configuration/primitives/ConfigurationTextArea";
 import { Typography } from "@/ui";
 import {
   OUTGOING_EDGE_CONFIGURATION_POLICY,
@@ -71,6 +73,11 @@ function areNodeConfigurationStoreSlicesEqual(
     (next.selectedNode?.config.description ?? "")
   )
     return false;
+  if (
+    (prev.selectedNode?.config.prompt ?? "") !==
+    (next.selectedNode?.config.prompt ?? "")
+  )
+    return false;
   if (!areOutgoingFlowEdgesDataEqual(prev.outgoingFlowEdges, next.outgoingFlowEdges))
     return false;
   if (!areValidTargetNodesDataEqual(prev.validTargetNodes, next.validTargetNodes))
@@ -118,16 +125,17 @@ export default function NodeConfiguration({ nodeId }: NodeConfigurationProps) {
     targetError: string | null;
   }>({ conditionError: null, targetError: null });
 
-  const { name, description } = selectedNode?.config ?? {
+  const { name, description, prompt } = selectedNode?.config ?? {
     name: undefined,
     description: undefined,
+    prompt: undefined,
   };
   const validation = useMemo(
     () => validateNodeConfig(name ?? "", description ?? ""),
     [name, description]
   );
   const isInvalid = !validation.isValid;
-  const backgroundColor =
+  const nodeTypeColor =
     NODE_TYPE_BACKGROUNDS[selectedNode?._type ?? "task"] ??
     NODE_TYPE_BACKGROUNDS.task;
   const borderColor = isInvalid ? INVALID_BORDER_COLOR : DEFAULT_BORDER_COLOR;
@@ -165,8 +173,12 @@ export default function NodeConfiguration({ nodeId }: NodeConfigurationProps) {
     updateNodeConfig({ name: event.target.value });
   };
 
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     updateNodeConfig({ description: event.target.value });
+  };
+
+  const handlePromptChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    updateNodeConfig({ prompt: event.target.value });
   };
 
   const onOpenAddEdgeForm = useCallback(() => {
@@ -309,7 +321,7 @@ export default function NodeConfiguration({ nodeId }: NodeConfigurationProps) {
 
   if (!selectedNode) {
     return (
-      <div className="p-4">
+      <div className="p-6">
         <Typography variant="body" className="text-neutral-500">
           Select a node or edge to configure
         </Typography>
@@ -319,53 +331,85 @@ export default function NodeConfiguration({ nodeId }: NodeConfigurationProps) {
 
   return (
     <div
-      className="rounded-lg border-2 p-4"
-      style={{ backgroundColor, borderColor }}
+      className="m-3 rounded-lg border bg-white shadow-sm relative overflow-hidden transition-all duration-300"
+      style={{ borderColor }}
     >
-      <Typography variant="body" weight="semibold" className="mb-4 text-[13px]">
-        {name || "Node Configuration"}
-      </Typography>
-      <div className="flex flex-col gap-3">
-        <ConfigurationField
-          labelText="Name"
-          errorMessage={validation.nameError}
-          errorElementId="name-error"
-        >
-          <ConfigurationTextInput
-            value={name ?? ""}
-            onChange={handleNameChange}
+      <div 
+        className="absolute top-0 left-0 w-full h-1" 
+        style={{ backgroundColor: nodeTypeColor }} 
+      />
+      
+      <div className="p-4 pt-5">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Settings2 className="w-5 h-5 text-neutral-500" />
+            <Typography variant="h4" weight="bold" className="text-neutral-800 tracking-tight">
+              {name || "Node Configuration"}
+            </Typography>
+          </div>
+          <div 
+            className="h-2 w-2 rounded-full ring-2 ring-white" 
+            style={{ backgroundColor: nodeTypeColor }} 
+          />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <ConfigurationField
+            labelText="Name"
             errorMessage={validation.nameError}
             errorElementId="name-error"
-          />
-        </ConfigurationField>
-        <ConfigurationField
-          labelText="Description"
-          errorMessage={validation.descriptionError}
-          errorElementId="description-error"
-        >
-          <ConfigurationTextInput
-            value={description ?? ""}
-            onChange={handleDescriptionChange}
+          >
+            <ConfigurationTextInput
+              value={name ?? ""}
+              onChange={handleNameChange}
+              errorMessage={validation.nameError}
+              errorElementId="name-error"
+            />
+          </ConfigurationField>
+          <ConfigurationField
+            labelText="Description"
             errorMessage={validation.descriptionError}
             errorElementId="description-error"
-          />
-        </ConfigurationField>
-        <OutgoingEdgesConfiguration
-          validTargetNodes={validTargetNodes}
-          outgoingFlowEdges={outgoingFlowEdges}
-          isAddEdgeFormVisible={isAddEdgeFormVisible}
-          draftConditionText={draftConditionText}
-          draftTargetNodeId={draftTargetNodeId}
-          addFormErrors={addFormErrors}
-          onOpenAddEdgeForm={onOpenAddEdgeForm}
-          onCloseAndResetAddEdgeForm={onCloseAndResetAddEdgeForm}
-          onRemoveOutgoingEdge={onRemoveOutgoingEdge}
-          onUpdateOutgoingEdgeCondition={onUpdateOutgoingEdgeCondition}
-          onUpdateOutgoingEdgeTarget={onUpdateOutgoingEdgeTarget}
-          onSubmitAddEdgeForm={onSubmitAddEdgeForm}
-          onDraftConditionChange={onDraftConditionChange}
-          onDraftTargetChange={onDraftTargetChange}
-        />
+          >
+            <ConfigurationTextArea
+              value={description ?? ""}
+              onChange={handleDescriptionChange}
+              errorMessage={validation.descriptionError}
+              errorElementId="description-error"
+            />
+          </ConfigurationField>
+          
+          <ConfigurationField
+            labelText="Prompt"
+            errorMessage={null}
+            errorElementId="prompt-error"
+          >
+            <ConfigurationTextArea
+              value={prompt ?? ""}
+              onChange={handlePromptChange}
+              placeholderText="Enter prompt here..."
+            />
+          </ConfigurationField>
+          
+          <div className="border-t border-neutral-100 pt-4 mt-1">
+            <OutgoingEdgesConfiguration
+              validTargetNodes={validTargetNodes}
+              outgoingFlowEdges={outgoingFlowEdges}
+              isAddEdgeFormVisible={isAddEdgeFormVisible}
+              draftConditionText={draftConditionText}
+              draftTargetNodeId={draftTargetNodeId}
+              addFormErrors={addFormErrors}
+              onOpenAddEdgeForm={onOpenAddEdgeForm}
+              onCloseAndResetAddEdgeForm={onCloseAndResetAddEdgeForm}
+              onRemoveOutgoingEdge={onRemoveOutgoingEdge}
+              onUpdateOutgoingEdgeCondition={onUpdateOutgoingEdgeCondition}
+              onUpdateOutgoingEdgeTarget={onUpdateOutgoingEdgeTarget}
+              onSubmitAddEdgeForm={onSubmitAddEdgeForm}
+              onDraftConditionChange={onDraftConditionChange}
+              onDraftTargetChange={onDraftTargetChange}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

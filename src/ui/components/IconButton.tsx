@@ -12,6 +12,7 @@ interface IconButtonProps extends Omit<AnimateUIButtonProps, 'variant' | 'size' 
   icon: ReactNode
   variant?: IconButtonVariant
   iconButtonSize?: IconButtonSize
+  isCircular?: boolean
 }
 
 const VARIANT_MAP: Record<IconButtonVariant, AnimateUIButtonProps['variant']> = {
@@ -29,6 +30,7 @@ export default function IconButton({
   icon,
   variant = 'neutral',
   iconButtonSize = 'md',
+  isCircular = true,
   disabled = false,
   className,
   ...restProps
@@ -39,7 +41,7 @@ export default function IconButton({
       variant={VARIANT_MAP[variant]}
       size={SIZE_MAP[iconButtonSize]}
       disabled={disabled}
-      className={cn(disabled && 'cursor-not-allowed', className)}
+      className={cn(disabled && 'cursor-not-allowed', isCircular && 'rounded-full', className)}
       {...restProps}
     >
       {icon}

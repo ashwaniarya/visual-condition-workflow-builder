@@ -10,12 +10,14 @@ Right now it supports 3 distinctive nodes:
 
 The codebase uses a registry pattern with configurable nodes, so we can create different specialized nodes based on the use case.
 
-## Screen Short
+## 📸 Screen Shot
 
 <img width="956" height="442" alt="image" src="https://github.com/user-attachments/assets/eb540b57-f525-4879-8fae-0082664d4c5f" />
 
 
-## Demo 
+## 🎬 Demo 
+
+Live Demo: https://visual-condition-workflow-builder.vercel.app/
 
 Dashboard PART 1 : https://www.loom.com/share/2aae81e0a3ca422ea9d8af39e83e9ac0 
 Dashboard PART 2 : https://www.loom.com/share/68cbc7d0b32f463da6e81aa591dd603c
@@ -28,8 +30,14 @@ You need a minimum Node.js version of 22.13.0 for development and build.
 
 1. **Clone the repository** 📥
 
+HTTPS
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/ashwaniarya/visual-condition-workflow-builder.git
+```
+
+SSH
+```bash
+git clone git@github.com:ashwaniarya/visual-condition-workflow-builder.git
 ```
 
 2. **Move into project root** 📂
@@ -38,7 +46,13 @@ git clone <your-repository-url>
 cd visual-worflow-builder-react
 ```
 
-3. **Use the required Node.js version** 🧩
+3. **Check your current Node.js version** 🔎
+
+```bash
+node -v
+```
+
+4. **Use `nvm` only if Node.js is lower than `22.13.0`** 🧩
 
 ```bash
 nvm install 22.13.0
@@ -46,25 +60,25 @@ nvm use 22.13.0
 node -v
 ```
 
-4. **Install dependencies** 📦
+5. **Install dependencies** 📦
 
 ```bash
 npm install
 ```
 
-5. **Run development server** ▶️
+6. **Run development server** ▶️
 
 ```bash
 npm run dev
 ```
 
-6. **Create production build** 🏗️
+7. **Create production build** 🏗️
 
 ```bash
 npm run build
 ```
 
-7. **Preview production build locally** 👀
+8. **Preview production build locally** 👀
 
 ```bash
 npm run preview

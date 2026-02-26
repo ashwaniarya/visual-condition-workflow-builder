@@ -14,6 +14,52 @@ The codebase uses a registry pattern with configurable nodes, so we can create d
 
 You need a minimum Node.js version of 22.13.0 for development and build.
 
+### 🚀 Step-by-Step Local Setup
+
+1. **Clone the repository** 📥
+
+```bash
+git clone <your-repository-url>
+```
+
+2. **Move into project root** 📂
+
+```bash
+cd visual-worflow-builder-react
+```
+
+3. **Use the required Node.js version** 🧩
+
+```bash
+nvm install 22.13.0
+nvm use 22.13.0
+node -v
+```
+
+4. **Install dependencies** 📦
+
+```bash
+npm install
+```
+
+5. **Run development server** ▶️
+
+```bash
+npm run dev
+```
+
+6. **Create production build** 🏗️
+
+```bash
+npm run build
+```
+
+7. **Preview production build locally** 👀
+
+```bash
+npm run preview
+```
+
 ### 🛠️ Development and Build Environment:
 
 Node Environment Required: 22.13.0
@@ -24,12 +70,14 @@ Node Environment Required: 22.13.0
 
 ### 📚 Library
 
-- UI Library - ReactJS
-- State Management - Redux + Redux Toolkit
-- Package Management - NPM
-- CSS Utility - Tailwind CSS
-- UI Component Management - shadcn
-- JSON Validator - Zod
+| Library / Tool | Why this choice | Trade-off to keep in mind |
+| --- | --- | --- |
+| ReactJS | Component composition makes the node-canvas UI easy to break into isolated, reusable building blocks (`Palette`, `Canvas`, `Config`, `Viewer`). | Large interactive trees can re-render often if memoization boundaries are not designed carefully. |
+| Redux + Redux Toolkit | Predictable centralized state for cross-screen concerns (selection, modal, toast, workflow status) with less boilerplate via slices and typed actions. | Adds indirection compared to local state, so state boundaries must stay intentional. |
+| NPM | Native Node ecosystem support with straightforward scripts for local dev, build, and preview. | Lockfile discipline is required to keep team environments deterministic. |
+| Tailwind CSS | Fast utility-first styling helps iterate on canvas-heavy UI without context switching between component and stylesheet files. | Utility classes can become noisy if design tokens and composition conventions are not enforced. |
+| shadcn | Copy-as-code component primitives provide full control over styling and behavior, useful for product-specific workflow UI customization. | Component ownership shifts to this repo, so upgrades are manual instead of package-driven. |
+| Zod | Runtime schema validation protects workflow import/export boundaries and keeps JSON contracts explicit and type-safe. | Schemas need ongoing maintenance as domain models evolve. |
 
 Other dependencies are provided in the `package.json` file.
 
@@ -39,24 +87,39 @@ Other dependencies are provided in the `package.json` file.
 
 ## Design Pattern Choices
 
-1. A node and edge interface design
-   Node - Generic node interface that can be further specialized - State to check if a node was configured or not - Has ability to define input and output port definitions - Stores basic UI-level details -
+1. **Node and Edge interface design**
+   - **Node**
+     - Generic node interface that can be further specialized.
+     - Tracks whether a node is configured or not.
+     - Defines input and output port definitions.
+     - Stores basic UI-level details.
+   - **Edge**
+     - Generic base edge interface that can be further specialized.
 
-   Edge - Generic base node interface that can be further specialized
+2. **Edge and Node Registry**
+   - Acts as a central state where all nodes can be created and used consistently.
 
-2. Edge and Node Registry - This acts as a central state where all nodes can be simply created and used. -
-3. Component design -
-   - Components are designed using the composition pattern with separation of concern to increase reusability.
-4. Custom Hooks - Business logic is added into hooks so that only parts of the code have to be changed.
+3. **Component design**
+   - Components use composition with separation of concerns to increase reusability.
 
-5. Performance optimization:
+4. **Custom Hooks**
+   - Business logic is moved into hooks so only targeted parts need to change.
 
-- Controlled reactivity using debouncing
-- Controlled rendering of Configuration Panel
+5. **Performance optimization**
+   - Controlled reactivity using debouncing.
+   - Controlled rendering of `ConfigurationPanel`.
+   - Code splitting with lazy-loaded feature modules to reduce initial bundle load.
 
-5. All the values come from constants so that it is easy to change. Also a further language-specific system can be easily built.
-6. JSON import has built-in validation to check if the incoming data is in the proper shape. Also it can be easily extended in case a checksum-based check is needed.
-7. Clean modern UI with context-based interaction
+6. **Centralized constants**
+   - Values come from constants, making updates easy.
+   - This also enables future language-specific extensions.
+
+7. **JSON import validation**
+   - Built-in validation checks incoming data shape.
+   - Can be extended later for checksum-based verification.
+
+8. **UI quality**
+   - Clean modern UI with context-based interaction.
 
 A simple high-level presentation view of how layers collaborate across UI rendering, state ownership, and workflow domain transforms.
 

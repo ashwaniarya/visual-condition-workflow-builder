@@ -1,7 +1,14 @@
-import { lazy, useRef, useState, useEffect, type ComponentType } from "react";
+import {
+  lazy,
+  useRef,
+  useState,
+  useEffect,
+  type ComponentType,
+  type LazyExoticComponent,
+} from "react";
 import { DEFERRED_IMPORT } from "@/shared/constants/layout";
 
-type LazyComponent<T extends ComponentType<never>> = React.LazyExoticComponent<T>;
+type LazyComponent<T extends ComponentType<unknown>> = LazyExoticComponent<T>;
 
 /**
  * Delays a dynamic import() until the browser is idle (via requestIdleCallback),
@@ -9,19 +16,19 @@ type LazyComponent<T extends ComponentType<never>> = React.LazyExoticComponent<T
  *
  * Returns the lazy component reference — safe to render inside <Suspense>.
  */
-export function useDeferredLazyImport<T extends ComponentType<never>>(
+export function useDeferredLazyImport<T extends ComponentType<unknown>>(
   importFactory: () => Promise<{ default: T }>
 ): LazyComponent<T> {
   const factoryRef = useRef(importFactory);
   const [LazyComponent] = useState<LazyComponent<T>>(() => {
-    let resolve: (module: { default: T }) => void;
+    let resolveModulePromise!: (module: { default: T }) => void;
 
-    const modulePromise = new Promise<{ default: T }>((r) => {
-      resolve = r;
+    const modulePromise = new Promise<{ default: T }>((resolveModule) => {
+      resolveModulePromise = resolveModule;
     });
 
     if (typeof window !== "undefined") {
-      const startImport = () => factoryRef.current().then(resolve);
+      const startImport = () => factoryRef.current().then(resolveModulePromise);
 
       if ("requestIdleCallback" in window) {
         window.requestIdleCallback(startImport, {

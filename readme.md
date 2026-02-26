@@ -132,53 +132,91 @@ flowchart TB
 
 ## 📁 Folder Structure
 
-Use this as a starter map 🗂️ (fill details as you like).
+Quick glance map for mental model:
+
+### Top-Level Map
 
 ```text
-visual-worflow-builder-react/
-├─ src/
-│  ├─ canvas/
-│  │  ├─ events/
-│  │  ├─ hooks/
-│  │  └─ CanvasContainer.tsx
-│  ├─ components/
-│  │  ├─ edges/
-│  │  ├─ modals/
-│  │  ├─ nodes/
-│  │  │  ├─ canvas/
-│  │  │  ├─ configuration/
-│  │  │  │  └─ primitives/
-│  │  │  └─ palette/
-│  │  ├─ toast/
-│  │  ├─ animate-ui/
-│  │  ├─ ConfigurationPanel.tsx
-│  │  ├─ NodePalette.tsx
-│  │  ├─ WorkFlowHeader.tsx
-│  │  ├─ WorkFlowJsonViewer.tsx
-│  │  ├─ WorkFlowValidation.tsx
-│  │  └─ WorkflowViewer.tsx
-│  ├─ constants/
-│  ├─ model/
-│  ├─ registry/
-│  ├─ screens/
-│  ├─ store/
-│  ├─ ui/
-│  ├─ utils/
-│  ├─ workflow/
-│  │  ├─ constants/
-│  │  ├─ io/
-│  │  ├─ mapping/
-│  │  ├─ parser/
-│  │  ├─ schema/
-│  │  ├─ serialization/
-│  │  └─ index.ts
-│  ├─ App.tsx
-│  ├─ router.tsx
-│  └─ index.css
-├─ components.json
-├─ package.json
-└─ readme.md
+src/
+├─ App.tsx
+├─ main.tsx
+├─ router.tsx
+├─ screens/
+├─ canvas/
+├─ hooks/
+├─ modal/
+├─ components/
+├─ ui/
+├─ store/
+├─ model/
+├─ registry/
+├─ workflow/
+├─ constants/
+├─ utils/
+├─ lib/
+├─ index.css
+└─ vite-env.d.ts
 ```
+
+### Layer Intent
+
+- **Entry and navigation**: `main.tsx`, `App.tsx`, `router.tsx`, `screens/` define app boot and screen routing.
+- **Interaction and canvas**: `canvas/`, `hooks/`, `modal/` handle user input, canvas behavior, and modal interaction flow.
+- **Presentation**: `components/`, `ui/` render feature UI and design-system primitives.
+- **State and domain**: `store/`, `model/`, `registry/`, `workflow/` hold state orchestration and workflow rules.
+- **Shared utilities**: `constants/`, `utils/`, `lib/` provide global config, reusable helpers, and shared primitives.
+
+### Canvas Focus
+
+```text
+canvas/
+├─ events/
+│  ├─ canvasEventBus.ts
+│  ├─ canvasEventTypes.ts
+│  └─ index.ts
+├─ hooks/
+│  ├─ useCanvasConnect.ts
+│  ├─ useCanvasDrag.ts
+│  ├─ useCanvasSelection.ts
+│  ├─ useValidationIssueList.ts
+│  ├─ useWorkflowValidation.ts
+│  └─ index.ts
+└─ CanvasContainer.tsx
+```
+
+### Workflow Focus
+
+```text
+workflow/
+├─ constants/
+├─ io/
+├─ mapping/
+├─ parser/
+├─ schema/
+├─ serialization/
+└─ index.ts
+```
+
+### Dependency Direction Rules
+
+```mermaid
+flowchart LR
+    entryLayer[EntryAndNavigation]
+    interactionLayer[InteractionAndCanvas]
+    presentationLayer[Presentation]
+    stateDomainLayer[StateAndDomain]
+    sharedLayer[SharedUtilities]
+
+    entryLayer --> interactionLayer
+    presentationLayer --> interactionLayer
+    interactionLayer --> stateDomainLayer
+    presentationLayer --> stateDomainLayer
+    stateDomainLayer --> sharedLayer
+    interactionLayer --> sharedLayer
+    presentationLayer --> sharedLayer
+```
+
+Keep dependencies mostly one-way (toward `state/domain` and `shared`) to preserve separation and quick traceability.
 
 ### 📡 Canvas Event Bus
 

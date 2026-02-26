@@ -2,7 +2,7 @@ import { type ReactNode } from 'react'
 import {
   Button as AnimateUIButton,
   type ButtonProps as AnimateUIButtonProps,
-} from '@/components/animate-ui/components/buttons/button'
+} from '@/ui/internal/animate-ui/components/buttons/button'
 import { cn } from '@/lib/utils'
 
 type IconButtonVariant = 'neutral' | 'danger'

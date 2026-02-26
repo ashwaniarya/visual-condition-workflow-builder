@@ -3,7 +3,7 @@ import {
   Tooltip as AnimateUITooltip,
   TooltipTrigger,
   TooltipContent,
-} from '@/components/animate-ui/components/radix/tooltip'
+} from '@/ui/internal/animate-ui/components/radix/tooltip'
 
 type TooltipPosition = 'top' | 'right' | 'bottom' | 'left'
 

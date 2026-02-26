@@ -1,9 +1,7 @@
-'use client';
-
 import type { Ref } from 'react';
 import { motion, type HTMLMotionProps } from 'motion/react';
 
-import { Slot, type WithAsChild } from '@/components/animate-ui/primitives/animate/slot';
+import { Slot, type WithAsChild } from '@/ui/internal/animate-ui/primitives/animate/slot';
 
 type ButtonProps = WithAsChild<
   Omit<HTMLMotionProps<'button'>, 'ref'> & {

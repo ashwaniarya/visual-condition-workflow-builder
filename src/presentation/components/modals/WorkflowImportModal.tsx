@@ -57,7 +57,9 @@ export default function WorkflowImportModal({ payload }: WorkflowImportModalProp
         </div>
         <TextArea
           value={jsonTextValue}
-          onChange={(event) => setJsonTextValue(event.target.value)}
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setJsonTextValue(event.target.value)
+          }
           rows={WORKFLOW_SERIALIZATION_FLAGS.jsonPasteRows}
           fullWidth
           placeholder='{"nodes": [], "edges": []}'

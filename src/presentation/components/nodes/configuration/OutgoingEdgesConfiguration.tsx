@@ -10,7 +10,7 @@ import { getNodeDisplayName } from "@/shared/utils/nodeDisplay";
 import { validateEdgeCondition } from "@/shared/utils/formValidation";
 import ConfigurationField from "@/presentation/components/nodes/configuration/primitives/ConfigurationField";
 import ConfigurationTextInput from "@/presentation/components/nodes/configuration/primitives/ConfigurationTextInput";
-import ConfigurationSelectInput from "@/presentation/components/nodes/configuration/primitives/ConfigurationSelectInput";
+import ConfigurationSelectInput from "./primitives/ConfigurationSelectInput";
 import { Button, Typography } from "@/design-system/ui";
 import { ArrowRight, Trash2, Plus, Share2, AlertCircle } from "lucide-react";
 import { clsx } from "clsx";
@@ -171,7 +171,9 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
                   <input
                     type="text"
                     value={baseEdge.condition ?? ""}
-                    onChange={(e) => onUpdateOutgoingEdgeCondition(flowEdge.id, e.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      onUpdateOutgoingEdgeCondition(flowEdge.id, event.target.value)
+                    }
                     placeholder="Condition..."
                     className={clsx(
                       `w-full min-w-0 ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHeightClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHorizontalPaddingClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlTextSizeClassName} rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 placeholder:text-neutral-400 transition-colors`,
@@ -191,7 +193,9 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
                 <div className="min-w-0 flex-[1_1_0]">
                   <select
                     value={baseEdge.targetNodeId}
-                    onChange={(e) => onUpdateOutgoingEdgeTarget(flowEdge.id, e.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                      onUpdateOutgoingEdgeTarget(flowEdge.id, event.target.value)
+                    }
                     title={targetNodeLabelMap[baseEdge.targetNodeId] ?? baseEdge.targetNodeId}
                     className={clsx(
                       `w-full min-w-0 ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHeightClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHorizontalPaddingClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlTextSizeClassName} pr-5 rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 text-neutral-700 cursor-pointer transition-colors appearance-none truncate whitespace-nowrap overflow-hidden text-ellipsis`
@@ -259,7 +263,9 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
             >
               <ConfigurationTextInput
                 value={draftConditionText}
-                onChange={(event) => onDraftConditionChange(event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onDraftConditionChange(event.target.value)
+                }
                 placeholderText="e.g., status == 'approved'"
                 errorMessage={addFormErrors.conditionError}
                 errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addConditionError}
@@ -273,7 +279,9 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
             >
               <ConfigurationSelectInput
                 selectedValue={draftTargetNodeId}
-                onChange={(event) => onDraftTargetChange(event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                  onDraftTargetChange(event.target.value)
+                }
                 options={targetNodeOptions}
                 errorMessage={addFormErrors.targetError}
                 errorElementId={OUTGOING_EDGE_CONFIGURATION_IDS.addTargetError}

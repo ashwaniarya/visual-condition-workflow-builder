@@ -1,13 +1,22 @@
+import { lazy, Suspense } from "react";
 import Split from "react-split";
 import { ReactFlowProvider } from "reactflow";
-import CanvasContainer from "@/interaction/canvas/CanvasContainer";
 import WorkFlowHeader from "@/presentation/components/WorkFlowHeader";
-import ConfigurationPanel from "@/presentation/components/ConfigurationPanel";
-import GlobalModalHost from "@/presentation/components/modals/GlobalModalHost";
 import NodePalette from "@/presentation/components/NodePalette";
 import GlobalToastHost from "@/presentation/components/toast/GlobalToastHost";
 import WorkflowViewer from "@/presentation/components/WorkflowViewer";
+import SuspenseFallbackSkeleton from "@/presentation/components/SuspenseFallbackSkeleton";
 import { SPLIT_LAYOUT } from "@/shared/constants/layout";
+
+const CanvasContainer = lazy(
+  () => import("@/interaction/canvas/CanvasContainer")
+);
+const ConfigurationPanel = lazy(
+  () => import("@/presentation/components/ConfigurationPanel")
+);
+const GlobalModalHost = lazy(
+  () => import("@/presentation/components/modals/GlobalModalHost")
+);
 
 export default function WorkflowScreen() {
   return (
@@ -44,7 +53,11 @@ export default function WorkflowScreen() {
                   <div className="absolute top-4 left-4 z-50 max-h-[calc(100%-2rem)] overflow-y-auto custom-scrollbar">
                     <NodePalette />
                   </div>
-                  <CanvasContainer />
+                  <Suspense
+                    fallback={<SuspenseFallbackSkeleton variant="canvas" />}
+                  >
+                    <CanvasContainer />
+                  </Suspense>
                 </div>
                 <div className="h-full w-full overflow-hidden bg-card border-t border-border">
                   <WorkflowViewer />
@@ -55,11 +68,17 @@ export default function WorkflowScreen() {
 
           <aside className="h-full overflow-hidden bg-sidebar border-l border-border">
             <div className="h-full overflow-y-auto">
-              <ConfigurationPanel />
+              <Suspense
+                fallback={<SuspenseFallbackSkeleton variant="panel" />}
+              >
+                <ConfigurationPanel />
+              </Suspense>
             </div>
           </aside>
         </Split>
-        <GlobalModalHost />
+        <Suspense fallback={null}>
+          <GlobalModalHost />
+        </Suspense>
         <GlobalToastHost />
       </div>
     </ReactFlowProvider>

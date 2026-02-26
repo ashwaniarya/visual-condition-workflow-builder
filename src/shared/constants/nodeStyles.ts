@@ -11,6 +11,13 @@ export const DEFAULT_BORDER_COLOR = "var(--border)";
 export const INVALID_BORDER = "1px solid var(--destructive)";
 export const INVALID_BORDER_COLOR = "var(--destructive)";
 
+// Edge invalid styles (centralized tokens)
+export const EDGE_INVALID_STROKE_COLOR = "var(--destructive)";
+export const EDGE_INVALID_STROKE_WIDTH = 2;
+export const EDGE_INVALID_LABEL_BORDER_COLOR = "var(--destructive)";
+export const EDGE_INVALID_LABEL_BACKGROUND_COLOR = "var(--color-rose-50)";
+export const EDGE_INVALID_LABEL_TEXT_COLOR = "var(--destructive)";
+
 // Node Dimensions & Spacing
 export const NODE_BORDER_RADIUS = "0.5rem"; // rounded-lg
 export const NODE_WIDTH_MIN = "160px";

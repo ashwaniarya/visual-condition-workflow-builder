@@ -13,4 +13,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-reactflow': ['reactflow'],
+          'vendor-highlightjs': ['highlight.js/lib/core', 'highlight.js/lib/languages/json'],
+        },
+      },
+    },
+  },
 })

@@ -37,6 +37,27 @@ Other dependencies are provided in the `package.json` file.
 
 ## 🏗️ High Level Architecture
 
+## Design Pattern Choices
+
+1. A node and edge interface design
+   Node - Generic node interface that can be further specialized - State to check if a node was configured or not - Has ability to define input and output port definitions - Stores basic UI-level details -
+
+   Edge - Generic base node interface that can be further specialized
+
+2. Edge and Node Registry - This acts as a central state where all nodes can be simply created and used. -
+3. Component design -
+   - Components are designed using the composition pattern with separation of concern to increase reusability.
+4. Custom Hooks - Business logic is added into hooks so that only parts of the code have to be changed.
+
+5. Performance optimization:
+
+- Controlled reactivity using debouncing
+- Controlled rendering of Configuration Panel
+
+5. All the values come from constants so that it is easy to change. Also a further language-specific system can be easily built.
+6. JSON import has built-in validation to check if the incoming data is in the proper shape. Also it can be easily extended in case a checksum-based check is needed.
+7. Clean modern UI with context-based interaction
+
 A simple high-level presentation view of how layers collaborate across UI rendering, state ownership, and workflow domain transforms.
 
 ```mermaid
@@ -204,26 +225,7 @@ For details context of folder structure move to.
 
 Canonical map (for humans + AI): `docs/folder-and-file-map.md`
 
-## Design Pattern Choises
-
-1. A node and edge interface design
-   Node - Generic node interface that have futher specialise - State to check if a node was configured or not - Has ablity to define input and output ports definition - store basic ui level details to -
-
-   Edge - Geric base node interface that can be futher specialise
-
-2. Edge and Node Registry - This acts as a central state where all node can be simple create and will used. -
-3. Component design -
-   - Compontent are design using composition pattern with seperation of concen to increase reusablity.
-4. Custom Hooks - Busines logic are added into hooks so that only parts of code has be changed.
-
-5. Performation optimisation:
-
-- Controlled reactivity using debouncing
-- Controlled rendering of Configuration Panel
-
-5. All the values comes from contants so that it easy to be change. Also futher language specific system can be easily built.
-6. JSON import has validation inbuild to check if incoming in proper shape. Also it can be easly extended in case checksum base check is needed to be added.
-7. Clean modern ui with context based interaction
+## Design of Canvas
 
 ### 📡 Canvas Event Bus
 

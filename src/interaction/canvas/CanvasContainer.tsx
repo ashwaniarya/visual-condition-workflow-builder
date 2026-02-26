@@ -49,7 +49,7 @@ function CanvasInner() {
     onEdgesDelete,
   } = useCanvasSelection();
 
-  useWorkflowValidation(nodes, dispatch);
+  useWorkflowValidation(nodes, edges, dispatch);
 
   return (
     <ReactFlow

@@ -97,7 +97,7 @@ export default function WorkFlowValidation() {
                 {VALIDATION_ISSUES_VIEWER.invalidNodesTitle}
               </Typography>
               {nodeIssues.length === 0 ? (
-                <Typography variant="caption" className="text-[10px] md:text-[10px] text-neutral-400">
+                <Typography variant="caption" className="text-[10px] md:text-[10px] text-neutral-400 block mt-1">
                   {VALIDATION_ISSUES_VIEWER.noInvalidNodesMessage}
                 </Typography>
               ) : (
@@ -136,7 +136,7 @@ export default function WorkFlowValidation() {
                 {VALIDATION_ISSUES_VIEWER.invalidEdgesTitle}
               </Typography>
               {edgeIssues.length === 0 ? (
-                <Typography variant="caption" className="text-[10px] md:text-[10px] text-neutral-400">
+                <Typography variant="caption" className="text-[10px] md:text-[10px] text-neutral-400 block mt-1">
                   {VALIDATION_ISSUES_VIEWER.noInvalidEdgesMessage}
                 </Typography>
               ) : (

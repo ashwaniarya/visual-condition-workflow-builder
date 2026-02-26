@@ -43,6 +43,14 @@ export const CANVAS_VIEWPORT = {
 } as const
 
 /**
+ * Deferred (idle-time) dynamic import settings
+ */
+export const DEFERRED_IMPORT = {
+  idleTimeoutMs: 3000,
+  fallbackDelayMs: 2000,
+} as const
+
+/**
  * WorkflowViewer constants (JSON display, syntax highlighting)
  */
 export const WORKFLOW_VIEWER = {

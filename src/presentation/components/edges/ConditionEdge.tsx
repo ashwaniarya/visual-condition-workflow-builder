@@ -11,6 +11,14 @@ import {
 import type { BaseEdge as BaseEdgeModel } from "@/domain/model/interface";
 import { setSelection } from "@/state/store/canvasSlice";
 import { EDGE_LABELS } from "@/shared/constants/edgeLabels";
+import { validateEdgeCondition } from "@/shared/utils/formValidation";
+import {
+  EDGE_INVALID_LABEL_BACKGROUND_COLOR,
+  EDGE_INVALID_LABEL_BORDER_COLOR,
+  EDGE_INVALID_LABEL_TEXT_COLOR,
+  EDGE_INVALID_STROKE_COLOR,
+  EDGE_INVALID_STROKE_WIDTH,
+} from "@/shared/constants/nodeStyles";
 import { IconButton } from "@/design-system/ui";
 
 interface ConditionEdgeData {
@@ -32,6 +40,9 @@ function ConditionEdge({
   const [isLabelHovered, setIsLabelHovered] = useState(false);
   const condition = data?.baseEdge?.condition ?? "";
   const displayText = condition.trim() || EDGE_LABELS.NO_CONDITION_PLACEHOLDER;
+  const isConditionInvalid = Boolean(
+    validateEdgeCondition(condition).conditionError
+  );
 
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
@@ -59,7 +70,18 @@ function ConditionEdge({
 
   return (
     <>
-      <BaseEdge id={id} path={edgePath} />
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        style={
+          isConditionInvalid
+            ? {
+                stroke: EDGE_INVALID_STROKE_COLOR,
+                strokeWidth: EDGE_INVALID_STROKE_WIDTH,
+              }
+            : undefined
+        }
+      />
       <EdgeLabelRenderer>
         <div
           style={{
@@ -72,6 +94,15 @@ function ConditionEdge({
             role="button"
             tabIndex={0}
             className="relative cursor-pointer rounded border border-neutral-300 bg-white px-2 py-1 text-xs pointer-events-auto"
+            style={
+              isConditionInvalid
+                ? {
+                    borderColor: EDGE_INVALID_LABEL_BORDER_COLOR,
+                    backgroundColor: EDGE_INVALID_LABEL_BACKGROUND_COLOR,
+                    color: EDGE_INVALID_LABEL_TEXT_COLOR,
+                  }
+                : undefined
+            }
             onClick={handleLabelClick}
             onKeyDown={(e) => e.key === "Enter" && handleLabelClick()}
             onMouseEnter={() => setIsLabelHovered(true)}

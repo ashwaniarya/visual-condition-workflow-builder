@@ -24,6 +24,12 @@ Live Demo: https://visual-condition-workflow-builder.vercel.app/
 Dashboard PART 1 : https://www.loom.com/share/2aae81e0a3ca422ea9d8af39e83e9ac0 
 Dashboard PART 2 : https://www.loom.com/share/68cbc7d0b32f463da6e81aa591dd603c
 
+## 🧭 Available Pages
+
+- Workflow Builder: [`/`](http://localhost:5173/)
+- Design System: [`/designsystem`](http://localhost:5173/designsystem)
+- UI Playground: [`/_playground`](http://localhost:5173/_playground)
+
 ## ⚙️ Setup
 
 You need a minimum Node.js version of 22.13.0 for development and build.

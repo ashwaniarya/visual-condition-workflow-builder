@@ -4,6 +4,7 @@ import type { Edge } from "reactflow";
 import {
   OUTGOING_EDGE_CONFIGURATION_IDS,
   OUTGOING_EDGE_CONFIGURATION_TEXT,
+  OUTGOING_EDGE_CONFIGURATION_UI_POLICY,
 } from "@/shared/constants/outgoingEdgeConfiguration";
 import { getNodeDisplayName } from "@/shared/utils/nodeDisplay";
 import { validateEdgeCondition } from "@/shared/utils/formValidation";
@@ -42,6 +43,37 @@ interface OutgoingEdgesConfigurationProps {
   onDraftTargetChange: (value: string) => void;
 }
 
+function truncateNodeLabelPart(
+  labelPart: string,
+  maximumCharacterCount: number
+): string {
+  if (labelPart.length <= maximumCharacterCount) {
+    return labelPart;
+  }
+
+  return `${labelPart.slice(0, maximumCharacterCount - 1)}...`;
+}
+
+function buildCompactNodeIdLabel(nodeIdentifier: string): string {
+  const maximumCharacterCount =
+    OUTGOING_EDGE_CONFIGURATION_UI_POLICY.targetIdMaxCharacters;
+
+  if (nodeIdentifier.length <= maximumCharacterCount) {
+    return nodeIdentifier;
+  }
+
+  const prefixCharacterCount = Math.max(
+    3,
+    Math.floor((maximumCharacterCount - 3) / 2)
+  );
+  const suffixCharacterCount = Math.max(
+    2,
+    maximumCharacterCount - prefixCharacterCount - 3
+  );
+
+  return `${nodeIdentifier.slice(0, prefixCharacterCount)}...${nodeIdentifier.slice(-suffixCharacterCount)}`;
+}
+
 const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
   validTargetNodes,
   outgoingFlowEdges,
@@ -58,13 +90,33 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
   onDraftConditionChange,
   onDraftTargetChange,
 }: OutgoingEdgesConfigurationProps) {
+  const targetNodeLabelMap = useMemo(
+    () =>
+      Object.fromEntries(
+        validTargetNodes.map((targetNode) => {
+          const rawNodeName = getNodeDisplayName(targetNode, targetNode.id);
+          const nodeNameForLabel = truncateNodeLabelPart(
+            rawNodeName,
+            OUTGOING_EDGE_CONFIGURATION_UI_POLICY.targetNameMaxCharacters
+          );
+          const nodeIdForLabel = buildCompactNodeIdLabel(targetNode.id);
+          const optionLabel = nodeIdForLabel
+            ? `${nodeNameForLabel}${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.targetLabelSeparator}${nodeIdForLabel}`
+            : nodeNameForLabel;
+
+          return [targetNode.id, optionLabel];
+        })
+      ),
+    [validTargetNodes]
+  );
+
   const targetNodeOptions = useMemo(
     () =>
       validTargetNodes.map((targetNode) => ({
         optionValue: targetNode.id,
-        optionLabel: getNodeDisplayName(targetNode, targetNode.id),
+        optionLabel: targetNodeLabelMap[targetNode.id] ?? targetNode.id,
       })),
-    [validTargetNodes]
+    [targetNodeLabelMap, validTargetNodes]
   );
 
   return (
@@ -110,19 +162,19 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
               <div
                 key={flowEdge.id}
                 className={clsx(
-                  "group flex items-center gap-2 p-1.5 rounded-md border bg-white transition-all duration-200",
+                  `flex items-center ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowContentGapClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowContainerPaddingClassName} rounded-md border bg-white transition-all duration-200`,
                   hasError ? "border-red-200 shadow-sm" : "border-neutral-200 hover:border-neutral-300"
                 )}
               >
                 {/* Condition Input */}
-                <div className="flex-1 relative min-w-[100px]">
+                <div className="relative min-w-0 flex-[1_1_0]">
                   <input
                     type="text"
                     value={baseEdge.condition ?? ""}
                     onChange={(e) => onUpdateOutgoingEdgeCondition(flowEdge.id, e.target.value)}
                     placeholder="Condition..."
                     className={clsx(
-                      "w-full h-8 px-2 text-sm rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 placeholder:text-neutral-400 transition-colors",
+                      `w-full min-w-0 ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHeightClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHorizontalPaddingClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlTextSizeClassName} rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 placeholder:text-neutral-400 transition-colors`,
                       hasError && "bg-red-50 text-red-900 placeholder:text-red-300"
                     )}
                   />
@@ -133,14 +185,17 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
                   )}
                 </div>
 
-                <ArrowRight className="w-4 h-4 text-neutral-300 shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 text-neutral-300 shrink-0" />
 
                 {/* Target Select */}
-                <div className="flex-1 min-w-[120px]">
+                <div className="min-w-0 flex-[1_1_0]">
                   <select
                     value={baseEdge.targetNodeId}
                     onChange={(e) => onUpdateOutgoingEdgeTarget(flowEdge.id, e.target.value)}
-                    className="w-full h-8 px-2 text-sm rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 text-neutral-700 cursor-pointer transition-colors appearance-none"
+                    title={targetNodeLabelMap[baseEdge.targetNodeId] ?? baseEdge.targetNodeId}
+                    className={clsx(
+                      `w-full min-w-0 ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHeightClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlHorizontalPaddingClassName} ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowControlTextSizeClassName} pr-5 rounded border-0 bg-neutral-50 focus:bg-white focus:ring-1 focus:ring-neutral-200 text-neutral-700 cursor-pointer transition-colors appearance-none truncate whitespace-nowrap overflow-hidden text-ellipsis`
+                    )}
                   >
                     <option value="" disabled>Select target...</option>
                     {targetNodeOptions.map((opt) => (
@@ -155,10 +210,12 @@ const OutgoingEdgesConfiguration = memo(function OutgoingEdgesConfiguration({
                 <button
                   type="button"
                   onClick={() => onRemoveOutgoingEdge(flowEdge.id)}
-                  className="p-1.5 text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  className={clsx(
+                    `shrink-0 ${OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowDeleteButtonPaddingClassName} text-neutral-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors`
+                  )}
                   title={OUTGOING_EDGE_CONFIGURATION_TEXT.removeEdgeButton}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className={OUTGOING_EDGE_CONFIGURATION_UI_POLICY.rowDeleteIconSizeClassName} />
                 </button>
               </div>
             );

@@ -27,9 +27,12 @@ export const NODE_WIDTH_MAX = "280px";
 export const SELECTED_NODE_BORDER_COLOR = "var(--ring)"; // Using ring color for selection
 export const SELECTED_NODE_BORDER_WIDTH = "2px"; // Keep same as default to avoid layout shift
 export const SELECTED_NODE_SHADOW =
-  "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)"; // Prominent Lift (xl shadow)
+  "0 0 0 1px rgb(139 92 246 / 0.45), 0 0 24px rgb(139 92 246 / 0.35), 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)"; // Purple glow + elevated lift
 export const DRAGGING_PALETTE_NODE_SHADOW =
   "0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.08)"; // Hover lift while dragging from palette
+export const SELECTED_EDGE_STROKE_WIDTH = 3;
+export const SELECTED_EDGE_GLOW_FILTER =
+  "drop-shadow(0 0 8px rgb(139 92 246 / 0.75)) drop-shadow(0 0 18px rgb(250 204 21 / 0.45))";
 
 // Semantic Backgrounds (Lighter/Subtle for modern feel)
 export const NODE_TYPE_BACKGROUNDS: Record<string, string> = {

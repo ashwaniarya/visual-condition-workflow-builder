@@ -74,7 +74,14 @@ export default function Node(props: NodeProps<NodeData>) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="w-full h-full">
+      {selected && (
+        <div
+          className="workflow-selected-node-gradient pointer-events-none absolute inset-[1px] z-0"
+          style={{ borderRadius: `calc(${NODE_BORDER_RADIUS} - ${SELECTED_NODE_BORDER_WIDTH})` }}
+        />
+      )}
+
+      <div className="relative z-10 w-full h-full">
         <InnerNode {...props} />
       </div>
 
@@ -85,7 +92,7 @@ export default function Node(props: NodeProps<NodeData>) {
           variant="neutral"
           iconButtonSize="sm"
           aria-label="Delete node"
-          className="nodrag nopan absolute bg-white shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+          className="nodrag nopan absolute z-20 bg-white shadow-sm hover:bg-red-50 hover:text-red-600 hover:border-red-200"
           style={{ top: DELETE_BUTTON_OFFSET, right: DELETE_BUTTON_OFFSET }}
           onClick={handleDeleteClick}
         />
@@ -93,7 +100,7 @@ export default function Node(props: NodeProps<NodeData>) {
 
       {isInvalid && (
         <div
-          className="absolute inset-0 ring-2 ring-destructive/20 pointer-events-none"
+          className="absolute inset-0 z-30 ring-2 ring-destructive/20 pointer-events-none"
           style={{ borderRadius: NODE_BORDER_RADIUS }}
         />
       )}

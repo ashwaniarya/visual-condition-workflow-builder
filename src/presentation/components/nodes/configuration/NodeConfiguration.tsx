@@ -340,7 +340,7 @@ export default function NodeConfiguration({ nodeId }: NodeConfigurationProps) {
           <div className="flex items-center gap-2">
             <Settings2 className="w-5 h-5 text-neutral-500" />
             <Typography variant="h4" weight="bold" className="text-neutral-800 tracking-tight">
-              {name || "Node Configuration"}
+              Node Configuration
             </Typography>
           </div>
           <div

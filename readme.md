@@ -73,6 +73,7 @@ Node Environment Required: 22.13.0
 | Library / Tool | Why this choice | Trade-off to keep in mind |
 | --- | --- | --- |
 | ReactJS | Component composition makes the node-canvas UI easy to break into isolated, reusable building blocks (`Palette`, `Canvas`, `Config`, `Viewer`). | Large interactive trees can re-render often if memoization boundaries are not designed carefully. |
+| React Flow | Provides production-ready node/edge graph rendering, drag-and-drop interactions, zoom/pan controls, and connection lifecycle APIs that drive the core workflow canvas behavior. | Strong library conventions mean custom behavior should be designed around its extension points to avoid brittle overrides. |
 | Redux + Redux Toolkit | Predictable centralized state for cross-screen concerns (selection, modal, toast, workflow status) with less boilerplate via slices and typed actions. | Adds indirection compared to local state, so state boundaries must stay intentional. |
 | NPM | Native Node ecosystem support with straightforward scripts for local dev, build, and preview. | Lockfile discipline is required to keep team environments deterministic. |
 | Tailwind CSS | Fast utility-first styling helps iterate on canvas-heavy UI without context switching between component and stylesheet files. | Utility classes can become noisy if design tokens and composition conventions are not enforced. |

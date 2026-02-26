@@ -7,7 +7,7 @@ import { getNodeDisplayName } from "@/shared/utils/nodeDisplay";
 import { validateEdgeCondition } from "@/shared/utils/formValidation";
 import ConfigurationField from "@/presentation/components/nodes/configuration/primitives/ConfigurationField";
 import ConfigurationTextInput from "@/presentation/components/nodes/configuration/primitives/ConfigurationTextInput";
-import NodeSelectionButton from "@/presentation/components/nodes/configuration/primitives/NodeSelectionButton";
+import NodeSelectionButton from "./primitives/NodeSelectionButton";
 import { Typography } from "@/design-system/ui";
 import { ArrowLeftRight } from "lucide-react";
 

@@ -11,6 +11,7 @@ import {
   useCanvasFocusSelection,
   useValidationIssueList,
 } from "@/interaction/canvas/hooks";
+import type { ValidationIssueListResult } from "@/interaction/canvas/hooks/useValidationIssueList";
 import { VALIDATION_ISSUES_VIEWER } from "@/shared/constants/validationIssues";
 import type { ValidationIssue } from "@/domain/model/validationIssue";
 import type { RootState } from "@/state/store";
@@ -44,7 +45,8 @@ export default function WorkFlowValidation() {
   const workflowState = useSelector((state: RootState) => state.canvas.workflowState);
   const workflowStateMessage = useSelector((state: RootState) => state.canvas.workflowStateMessage);
   const selected = useSelector((state: RootState) => state.canvas.selected);
-  const { nodeIssues, edgeIssues, totalIssueCount } = useValidationIssueList();
+  const validationIssueList: ValidationIssueListResult = useValidationIssueList();
+  const { nodeIssues, edgeIssues, totalIssueCount } = validationIssueList;
   const { focusValidationIssue } = useCanvasFocusSelection();
 
   const isIssueSelected = (validationIssue: ValidationIssue): boolean => {

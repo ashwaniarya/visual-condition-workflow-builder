@@ -6,6 +6,12 @@ import { VALIDATION_ISSUES_VIEWER } from "@/shared/constants/validationIssues";
 import { getNodeDisplayName } from "@/shared/utils/nodeDisplay";
 import { validateEdgeCondition, validateNodeConfig } from "@/shared/utils/formValidation";
 
+export interface ValidationIssueListResult {
+  nodeIssues: NodeValidationIssue[];
+  edgeIssues: EdgeValidationIssue[];
+  totalIssueCount: number;
+}
+
 function resolveNodeIssueReason(baseNode: BaseNode): string {
   const validationResult = validateNodeConfig(
     baseNode.config?.name ?? "",
@@ -24,7 +30,7 @@ function resolveNodeIssueReason(baseNode: BaseNode): string {
   return VALIDATION_ISSUES_VIEWER.unknownNodeIssueMessage;
 }
 
-export function useValidationIssueList() {
+export function useValidationIssueList(): ValidationIssueListResult {
   const flowNodes = useStore((state) => Array.from(state.nodeInternals.values()));
   const flowEdges = useStore((state) => state.edges);
 

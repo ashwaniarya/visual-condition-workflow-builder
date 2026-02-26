@@ -17,7 +17,10 @@ export default function ConfigurationPanel() {
         <Typography variant="body" weight="medium" className="text-neutral-600">
           No Selection
         </Typography>
-        <Typography variant="caption" className="text-neutral-400 mt-1 max-w-[180px]">
+        <Typography
+          variant="caption"
+          className="text-neutral-400 mt-1 max-w-[180px]"
+        >
           Click on a node or edge to edit its properties
         </Typography>
       </div>

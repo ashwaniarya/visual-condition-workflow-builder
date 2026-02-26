@@ -13,7 +13,7 @@ import { createInitialWorkflowNodes } from "@/shared/constants/initialWorkflowNo
 import { WORKFLOW_EDGE_TYPES } from "@/shared/constants/workflowEdgeTypes";
 import DefaultEdge from "@/presentation/components/edges/DefaultEdge";
 import ConditionEdge from "@/presentation/components/edges/ConditionEdge";
-import { WorkflowNode } from "@/presentation/components/nodes/canvas";
+import WorkflowNode from "@/presentation/components/nodes/canvas/Node";
 import { nodeRegistry } from "@/domain/registry/nodeRegistry";
 import {
   useCanvasConnect,

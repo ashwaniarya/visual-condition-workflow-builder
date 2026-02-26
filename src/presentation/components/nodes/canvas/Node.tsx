@@ -17,9 +17,9 @@ import {
 import { IconButton } from "@/design-system/ui";
 import { cn } from "@/shared/lib/utils";
 
-import StartNode from "./StartNode";
-import EndNode from "./EndNode";
-import TaskNode from "./TaskNode";
+import StartNode from "@/presentation/components/nodes/canvas/StartNode";
+import EndNode from "@/presentation/components/nodes/canvas/EndNode";
+import TaskNode from "@/presentation/components/nodes/canvas/TaskNode";
 
 type NodeData = { baseNode: BaseNode };
 

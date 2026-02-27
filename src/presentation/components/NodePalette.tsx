@@ -1,7 +1,11 @@
 import { nodeRegistry } from "@/domain/registry/nodeRegistry";
 import type { BaseNode } from "@/domain/model/interface";
 import { paletteNodeRegistry } from "@/presentation/components/nodes/palette";
-import { DRAG_DATA_TYPE } from "@/shared/constants/dragConfig";
+import {
+  DRAG_DATA_TYPE,
+  DRAG_OFFSET_DATA_TYPE,
+  type DragOffsetPayload,
+} from "@/shared/constants/dragConfig";
 import { Typography } from "@/design-system/ui";
 import { GripHorizontal } from "lucide-react";
 import { useState } from "react";
@@ -9,6 +13,16 @@ import { useState } from "react";
 function handleDragStart(event: React.DragEvent, nodeType: string) {
   event.dataTransfer.setData(DRAG_DATA_TYPE, nodeType);
   event.dataTransfer.effectAllowed = "copy";
+
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+  const offsetPayload: DragOffsetPayload = {
+    offsetX: event.clientX - rect.left,
+    offsetY: event.clientY - rect.top,
+  };
+  event.dataTransfer.setData(
+    DRAG_OFFSET_DATA_TYPE,
+    JSON.stringify(offsetPayload)
+  );
 }
 
 export default function NodePalette() {

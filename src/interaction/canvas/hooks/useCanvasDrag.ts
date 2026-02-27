@@ -11,7 +11,11 @@ import {
   emitCanvasEvent,
   subscribeCanvasEvent,
 } from "@/interaction/canvas/events/canvasEventBus";
-import { DRAG_DATA_TYPE } from "@/shared/constants/dragConfig";
+import {
+  DRAG_DATA_TYPE,
+  DRAG_OFFSET_DATA_TYPE,
+  type DragOffsetPayload,
+} from "@/shared/constants/dragConfig";
 
 function baseNodeToFlowNode(baseNode: BaseNode): ReactFlowNode {
   return {
@@ -72,9 +76,23 @@ export function useCanvasDrag(
       if (!nodeType) return;
       const template = nodeRegistry[nodeType as keyof typeof nodeRegistry];
       if (!template) return;
+
+      let dropScreenX = event.clientX;
+      let dropScreenY = event.clientY;
+      const offsetData = event.dataTransfer.getData(DRAG_OFFSET_DATA_TYPE);
+      if (offsetData) {
+        try {
+          const { offsetX, offsetY } = JSON.parse(offsetData) as DragOffsetPayload;
+          dropScreenX -= offsetX;
+          dropScreenY -= offsetY;
+        } catch {
+          /* fallback: use cursor position as-is */
+        }
+      }
+
       const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
+        x: dropScreenX,
+        y: dropScreenY,
       });
       emitCanvasEvent(CANVAS_EVENT_TYPES.NODE_ADDED, { nodeType, position });
     },

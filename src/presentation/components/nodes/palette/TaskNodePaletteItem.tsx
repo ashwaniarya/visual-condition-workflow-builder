@@ -35,8 +35,10 @@ export default function TaskNodePaletteItem({
       onDragStart={(e) => onDragStart(e, nodeType)}
       onDragEnd={onDragEnd}
       className={cn(
-        "flex items-center gap-2 p-2 rounded-md border cursor-grab active:cursor-grabbing transition-all",
-        isDragging ? "border-neutral-300" : "border-transparent hover:border-neutral-200"
+        "flex items-center justify-center gap-2 p-2 rounded-md border cursor-grab active:cursor-grabbing transition-all",
+        isDragging
+          ? "border-neutral-300"
+          : "border-transparent hover:border-neutral-200",
       )}
       style={{
         backgroundColor,
@@ -44,9 +46,13 @@ export default function TaskNodePaletteItem({
       }}
     >
       <InfoButton message={metadata.infoMessage} />
-      <Square className="w-4 h-4" style={{ color: iconColor }} />
-      <div className="flex-1 min-w-0">
-        <Typography variant="caption" weight="medium" className="text-neutral-700">
+      <Square className="w-4 h-4 shrink-0" style={{ color: iconColor }} />
+      <div className="flex-1 min-w-0 flex items-center">
+        <Typography
+          variant="caption"
+          weight="medium"
+          className="leading-4 text-neutral-700"
+        >
           {metadata.displayTitle}
         </Typography>
       </div>

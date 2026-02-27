@@ -24,8 +24,8 @@ export default function StartNode({ data }: NodeProps<StartNodeData>) {
         style={{ borderRadius: `calc(${NODE_BORDER_RADIUS} - ${SELECTED_NODE_BORDER_WIDTH})` }}
       >
         <div className="flex items-center gap-2 p-2 border-b border-neutral-100" style={{ backgroundColor }}>
-          <PlayCircle className="w-4 h-4" style={{ color: iconColor }} />
-          <Typography variant="caption" weight="bold" className="text-neutral-700 uppercase tracking-wide text-[10px]">
+          <PlayCircle className="w-4 h-4 shrink-0" style={{ color: iconColor }} />
+          <Typography variant="caption" weight="bold" className="leading-none text-neutral-700 uppercase tracking-wide text-[10px]">
             Start
           </Typography>
         </div>

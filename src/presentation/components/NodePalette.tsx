@@ -30,8 +30,8 @@ export default function NodePalette() {
   return (
     <div className="bg-white/95 backdrop-blur-sm border border-neutral-200 rounded-lg shadow-lg p-3 w-48 flex flex-col gap-3">
       <div className="flex items-center gap-2 pb-2 border-b border-neutral-100">
-        <GripHorizontal className="w-4 h-4 text-neutral-400" />
-        <Typography variant="caption" weight="bold" className="text-neutral-500 uppercase tracking-wider text-[10px]">
+        <GripHorizontal className="w-4 h-4 shrink-0 text-neutral-400" />
+        <Typography variant="caption" weight="bold" className="leading-4 text-neutral-500 uppercase tracking-wider text-[10px]">
           Components
         </Typography>
       </div>

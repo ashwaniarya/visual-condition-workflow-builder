@@ -44,9 +44,9 @@ export default function StartNodePaletteItem({
       }}
     >
       <InfoButton message={metadata.infoMessage} />
-      <PlayCircle className="w-4 h-4" style={{ color: iconColor }} />
+      <PlayCircle className="w-4 h-4 shrink-0" style={{ color: iconColor }} />
       <div className="flex-1 min-w-0">
-        <Typography variant="caption" weight="medium" className="text-neutral-700">
+        <Typography variant="caption" weight="medium" className="leading-4 text-neutral-700">
           {metadata.displayTitle}
         </Typography>
       </div>

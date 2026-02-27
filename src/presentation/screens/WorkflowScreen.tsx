@@ -6,6 +6,8 @@ import NodePalette from "@/presentation/components/NodePalette";
 import GlobalToastHost from "@/presentation/components/toast/GlobalToastHost";
 import WorkflowViewer from "@/presentation/components/WorkflowViewer";
 import SuspenseFallbackSkeleton from "@/presentation/components/SuspenseFallbackSkeleton";
+import ErrorFallback from "@/presentation/components/ErrorFallback";
+import ErrorBoundary from "@/shared/components/ErrorBoundary";
 import { SPLIT_LAYOUT } from "@/shared/constants/layout";
 
 const CanvasContainer = lazy(
@@ -53,11 +55,15 @@ export default function WorkflowScreen() {
                   <div className="absolute top-4 left-4 z-50 max-h-[calc(100%-2rem)] overflow-y-auto custom-scrollbar">
                     <NodePalette />
                   </div>
-                  <Suspense
-                    fallback={<SuspenseFallbackSkeleton variant="canvas" />}
+                  <ErrorBoundary
+                    fallback={<ErrorFallback variant="inline" onRetry={() => {}} />}
                   >
-                    <CanvasContainer />
-                  </Suspense>
+                    <Suspense
+                      fallback={<SuspenseFallbackSkeleton variant="canvas" />}
+                    >
+                      <CanvasContainer />
+                    </Suspense>
+                  </ErrorBoundary>
                 </div>
                 <div className="h-full w-full overflow-hidden bg-card border-t border-border">
                   <WorkflowViewer />
@@ -68,11 +74,15 @@ export default function WorkflowScreen() {
 
           <aside className="h-full overflow-hidden bg-sidebar border-l border-border">
             <div className="h-full overflow-y-auto">
-              <Suspense
-                fallback={<SuspenseFallbackSkeleton variant="panel" />}
+              <ErrorBoundary
+                fallback={<ErrorFallback variant="panel" onRetry={() => {}} />}
               >
-                <ConfigurationPanel />
-              </Suspense>
+                <Suspense
+                  fallback={<SuspenseFallbackSkeleton variant="panel" />}
+                >
+                  <ConfigurationPanel />
+                </Suspense>
+              </ErrorBoundary>
             </div>
           </aside>
         </Split>

@@ -6,6 +6,9 @@ import globalUiActionsReducer, {
   showGlobalToast,
 } from "@/state/store/globalUiActionsSlice";
 
+const MOCK_TOAST_EVENT_ID_SAVED = "11111111-1111-1111-1111-111111111111";
+const MOCK_TOAST_EVENT_ID_FAILED = "22222222-2222-2222-2222-222222222222";
+
 describe("globalUiActionsSlice", () => {
   afterEach(() => {
     vi.restoreAllMocks();
@@ -60,7 +63,7 @@ describe("globalUiActionsSlice", () => {
   });
 
   it("attaches deterministic eventId using showGlobalToast prepare", () => {
-    vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue("uuid-123");
+    vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue(MOCK_TOAST_EVENT_ID_SAVED);
 
     const nextState = globalUiActionsReducer(
       undefined,
@@ -73,7 +76,7 @@ describe("globalUiActionsSlice", () => {
     );
 
     expect(nextState.activeToastEvent).toEqual({
-      eventId: "uuid-123",
+      eventId: MOCK_TOAST_EVENT_ID_SAVED,
       variant: "success",
       title: "Saved",
       description: "Workflow exported",
@@ -82,7 +85,7 @@ describe("globalUiActionsSlice", () => {
   });
 
   it("clears active toast event", () => {
-    vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue("uuid-456");
+    vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue(MOCK_TOAST_EVENT_ID_FAILED);
     const withToast = globalUiActionsReducer(
       undefined,
       showGlobalToast({
@@ -90,7 +93,7 @@ describe("globalUiActionsSlice", () => {
         title: "Failed",
       })
     );
-    expect(withToast.activeToastEvent?.eventId).toBe("uuid-456");
+    expect(withToast.activeToastEvent?.eventId).toBe(MOCK_TOAST_EVENT_ID_FAILED);
 
     const cleared = globalUiActionsReducer(withToast, clearGlobalToastEvent());
     expect(cleared.activeToastEvent).toBeNull();

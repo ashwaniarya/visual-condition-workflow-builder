@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useReactFlow } from "reactflow";
 import type { NodeProps } from "reactflow";
 import type { BaseNode } from "@/domain/model/interface";
-import { Trash2 } from "lucide-react";
+import { Trash2, TriangleAlert } from "lucide-react";
 import {
   PROTECTED_NODE_TYPES,
   DELETE_BUTTON_OFFSET,
@@ -13,6 +13,9 @@ import {
   SELECTED_NODE_SHADOW,
   SELECTED_NODE_BORDER_COLOR,
   SELECTED_NODE_BORDER_WIDTH,
+  INVALID_NODE_ICON_SIZE,
+  INVALID_NODE_BADGE_SIZE,
+  INVALID_NODE_BADGE_CLIP_PATH,
 } from "@/shared/constants/nodeStyles";
 import { IconButton } from "@/design-system/ui";
 import { cn } from "@/shared/lib/utils";
@@ -99,10 +102,22 @@ export default function Node(props: NodeProps<NodeData>) {
       )}
 
       {isInvalid && (
-        <div
-          className="absolute inset-0 z-30 ring-2 ring-destructive/20 pointer-events-none"
-          style={{ borderRadius: NODE_BORDER_RADIUS }}
-        />
+        <>
+          <div
+            className="absolute inset-0 z-30 ring-2 ring-destructive/20 pointer-events-none"
+            style={{ borderRadius: NODE_BORDER_RADIUS }}
+          />
+          <div
+            className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center bg-white p-0.5 shadow-sm ring-2 ring-destructive/30 pointer-events-none"
+            style={{ clipPath: INVALID_NODE_BADGE_CLIP_PATH, width: INVALID_NODE_BADGE_SIZE, height: INVALID_NODE_BADGE_SIZE }}
+            aria-hidden
+          >
+            <TriangleAlert
+              className="text-destructive"
+              style={{ width: INVALID_NODE_ICON_SIZE, height: INVALID_NODE_ICON_SIZE }}
+            />
+          </div>
+        </>
       )}
     </div>
   );

@@ -6,6 +6,8 @@ import {
   NODE_ICON_COLORS,
   NODE_BORDER_RADIUS,
   SELECTED_NODE_BORDER_WIDTH,
+  NODE_HANDLE_BASE_CLASSES,
+  NODE_HANDLE_RIGHT_OFFSET_PX,
 } from "@/shared/constants/nodeStyles";
 import { Typography } from "@/design-system/ui";
 import { PlayCircle } from "lucide-react";
@@ -45,7 +47,8 @@ export default function StartNode({ data }: NodeProps<StartNodeData>) {
       <Handle
         type="source"
         position={Position.Right}
-        className="!w-3 !h-3 !bg-neutral-400 !border-2 !border-white transition-colors hover:!bg-emerald-500"
+        className={`!w-5 !h-5 !bg-neutral-400 ${NODE_HANDLE_BASE_CLASSES} hover:!bg-emerald-500`}
+        style={{ left: "auto", right: NODE_HANDLE_RIGHT_OFFSET_PX }}
       />
     </div>
   );

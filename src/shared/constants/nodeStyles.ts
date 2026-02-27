@@ -11,12 +11,30 @@ export const DEFAULT_BORDER_COLOR = "var(--border)";
 export const INVALID_BORDER = "1px solid var(--destructive)";
 export const INVALID_BORDER_COLOR = "var(--destructive)";
 
+// Invalid node badge at top edge center (triangular)
+export const INVALID_NODE_ICON_SIZE = 14;
+export const INVALID_NODE_BADGE_SIZE = 24; // w-6 h-6
+/** clip-path for triangular badge (point down) */
+export const INVALID_NODE_BADGE_CLIP_PATH = "polygon(50% 0%, 0% 100%, 100% 100%)";
+
 // Edge invalid styles (centralized tokens)
 export const EDGE_INVALID_STROKE_COLOR = "var(--destructive)";
 export const EDGE_INVALID_STROKE_WIDTH = 2;
 export const EDGE_INVALID_LABEL_BORDER_COLOR = "var(--destructive)";
 export const EDGE_INVALID_LABEL_BACKGROUND_COLOR = "var(--color-rose-50)";
 export const EDGE_INVALID_LABEL_TEXT_COLOR = "var(--destructive)";
+
+// Node connection handles (aligned to node outer edge)
+export const NODE_HANDLE_SIZE_PX = 20;
+export const NODE_HANDLE_EDGE_OFFSET_PX = 2; // matches SELECTED_NODE_BORDER_WIDTH for flush edge alignment
+/** Left handle: center at outer edge (-2px). left = -(edgeOffset + size/2) */
+export const NODE_HANDLE_LEFT_OFFSET_PX =
+  -(NODE_HANDLE_EDGE_OFFSET_PX + NODE_HANDLE_SIZE_PX / 2);
+/** Right handle: center at outer edge (100%+2px). right = -(edgeOffset + size/2) */
+export const NODE_HANDLE_RIGHT_OFFSET_PX =
+  -(NODE_HANDLE_EDGE_OFFSET_PX + NODE_HANDLE_SIZE_PX / 2);
+export const NODE_HANDLE_BASE_CLASSES =
+  "!border-2 !border-white transition-all duration-200 ease-out hover:!ring-4 hover:!ring-neutral-300/50";
 
 // Node Dimensions & Spacing
 export const NODE_BORDER_RADIUS = "0.5rem"; // rounded-lg

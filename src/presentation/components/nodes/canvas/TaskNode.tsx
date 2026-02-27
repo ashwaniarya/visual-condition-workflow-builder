@@ -6,6 +6,9 @@ import {
   NODE_ICON_COLORS,
   NODE_BORDER_RADIUS,
   SELECTED_NODE_BORDER_WIDTH,
+  NODE_HANDLE_BASE_CLASSES,
+  NODE_HANDLE_LEFT_OFFSET_PX,
+  NODE_HANDLE_RIGHT_OFFSET_PX,
 } from "@/shared/constants/nodeStyles";
 import { Typography } from "@/design-system/ui";
 import { Square } from "lucide-react";
@@ -22,7 +25,8 @@ export default function TaskNode({ data }: NodeProps<TaskNodeData>) {
       <Handle
         type="target"
         position={Position.Left}
-        className="!w-3 !h-3 !bg-neutral-400 !border-2 !border-white transition-colors hover:!bg-blue-500"
+        className={`!w-5 !h-5 !bg-neutral-400 ${NODE_HANDLE_BASE_CLASSES} hover:!bg-blue-500`}
+        style={{ left: NODE_HANDLE_LEFT_OFFSET_PX, right: "auto" }}
       />
 
       <div
@@ -49,7 +53,8 @@ export default function TaskNode({ data }: NodeProps<TaskNodeData>) {
       <Handle
         type="source"
         position={Position.Right}
-        className="!w-3 !h-3 !bg-neutral-400 !border-2 !border-white transition-colors hover:!bg-blue-500"
+        className={`!w-5 !h-5 !bg-neutral-400 ${NODE_HANDLE_BASE_CLASSES} hover:!bg-blue-500`}
+        style={{ left: "auto", right: NODE_HANDLE_RIGHT_OFFSET_PX }}
       />
     </div>
   );

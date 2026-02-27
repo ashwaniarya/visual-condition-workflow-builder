@@ -4,14 +4,13 @@ import WorkflowScreen from "@/presentation/screens/WorkflowScreen";
 import SuspenseFallbackSkeleton from "@/presentation/components/SuspenseFallbackSkeleton";
 
 const DesignSystemScreen = lazy(
-  () => import("@/presentation/screens/DesignSystemScreen")
+  () => import("@/presentation/screens/DesignSystemScreen"),
 );
 const UITestPlaygroundScreen = lazy(
-  () => import("@/presentation/screens/UITestPlaygroundScreen")
+  () => import("@/presentation/screens/UITestPlaygroundScreen"),
 );
 
 const router = createBrowserRouter([
-  { path: "/", element: <WorkflowScreen /> },
   {
     path: "/designsystem",
     element: (
@@ -28,6 +27,7 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
+  { path: "/", element: <WorkflowScreen /> },
 ]);
 
 export function AppRouter() {

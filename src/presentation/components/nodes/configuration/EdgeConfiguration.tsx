@@ -21,7 +21,7 @@ const EDGE_CONFIGURATION_TEXT = {
   sourceSelectionActionLabel: "Select source node",
   conditionLabel: "Condition",
   conditionErrorElementId: "condition-error",
-  conditionPlaceholder: "e.g. status === 'approved'",
+  conditionPlaceholder: "e.g.'on approved' or 'on rejected'",
   targetLabel: "Target",
   targetSelectionActionLabel: "Select target node",
 } as const;
@@ -79,7 +79,11 @@ export default function EdgeConfiguration({
       <div className="p-4 pt-5">
         <div className="flex items-center gap-2 mb-4">
           <ArrowLeftRight className="w-5 h-5 text-neutral-500" />
-          <Typography variant="h4" weight="bold" className="text-neutral-800 tracking-tight">
+          <Typography
+            variant="h4"
+            weight="bold"
+            className="text-neutral-800 tracking-tight"
+          >
             {EDGE_CONFIGURATION_TEXT.title}
           </Typography>
         </div>
@@ -88,7 +92,9 @@ export default function EdgeConfiguration({
             <NodeSelectionButton
               directionIndicator="left"
               onClick={handleSelectSourceNode}
-              ariaActionLabel={EDGE_CONFIGURATION_TEXT.sourceSelectionActionLabel}
+              ariaActionLabel={
+                EDGE_CONFIGURATION_TEXT.sourceSelectionActionLabel
+              }
               nodeDisplayName={getNodeDisplayName(sourceNode, sourceNodeId)}
             />
           </ConfigurationField>
@@ -109,7 +115,9 @@ export default function EdgeConfiguration({
             <NodeSelectionButton
               directionIndicator="right"
               onClick={handleSelectTargetNode}
-              ariaActionLabel={EDGE_CONFIGURATION_TEXT.targetSelectionActionLabel}
+              ariaActionLabel={
+                EDGE_CONFIGURATION_TEXT.targetSelectionActionLabel
+              }
               nodeDisplayName={getNodeDisplayName(targetNode, targetNodeId)}
             />
           </ConfigurationField>

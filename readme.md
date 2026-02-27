@@ -26,9 +26,9 @@ Dashboard PART 2 : https://www.loom.com/share/68cbc7d0b32f463da6e81aa591dd603c
 
 ## 🧭 Available Pages
 
-- Workflow Builder: [`/`](http://localhost:5173/)
-- Design System: [`/designsystem`](http://localhost:5173/designsystem)
-- UI Playground: [`/_playground`](http://localhost:5173/_playground)
+- Workflow Builder: [`/`](https://visual-condition-workflow-builder.vercel.app/)
+- Design System: [`/designsystem`](https://visual-condition-workflow-builder.vercel.app/designsystem)
+- UI Playground: [`/_playground`](https://visual-condition-workflow-builder.vercel.app/_playground)
 
 ## ⚙️ Setup
 

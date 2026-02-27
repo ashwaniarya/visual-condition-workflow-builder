@@ -9,6 +9,12 @@ interface EdgeRegistry {
   [key: string]: BaseEdge;
 }
 
+/**
+ * Node Registry is a registry of all the nodes that are available in the system.
+ * It is used to store the nodes that are available in the system.
+ * 
+*/
+
 const nodeRegistry: NodeRegistry = {
   start: {
     _type: "start",
